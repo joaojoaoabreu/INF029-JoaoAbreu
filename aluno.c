@@ -1,9 +1,13 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
+define limite_alunos = 3;
+
+void menu();
+
 typedef struct{
     int matricula;
     char nome[100];
-    int data_nascimento;
+    int data_nascimento[3];
     int cpf;
     int disciplinas[10];
     char genero;
@@ -14,28 +18,25 @@ typedef struct{
 int main(){
     int opcao;
     int sair=0;
+    Pessoa Lista_alunos[limite_alunos];
+    int num_aluno=0;
 
     while(sair==0){
-        puts("PROJETO ESCOLA\n\n");
-
-        puts("Escolha uma opção:");
-
-        puts("\t0 - Sair");
-        puts("\t1 - Cadastrar");
-        puts("\t2 - Alterar");
-        puts("\t3 - Excluir");
-        puts("\t4 - Listar");
-
+        menu();
         scanf("%d", &opcao);
         getchar();
+
+
         switch(opcao){
             case 0:{
                 sair=1;
                 break;
             }
             case 1:{
-                puts("Cadastrar:\n");
-                puts("\t1 - Aluno:\n");
+                puts("Cadastrar Aluno:\n");
+                puts("Digite o Nome:\n");
+                fgets(Lista_alunos[num_aluno].nome, 100, stdin);
+                getchar();
                 puts("\t2 - Professor:\n");
                 puts("\t2 - Disciplina:\n");
                 getchar();
@@ -58,4 +59,16 @@ int main(){
         }
     }
     return 0;
+}
+
+void menu(){
+    puts("PROJETO ESCOLA\n\n");
+
+    puts("Escolha uma opção:");
+
+    puts("\t0 - Sair");
+    puts("\t1 - Cadastrar Aluno");
+    puts("\t2 - Alterar Aluno");
+    puts("\t3 - Excluir Aluno");
+    puts("\t4 - Listar Alunos");
 }
