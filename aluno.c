@@ -3,6 +3,7 @@
 define limite_alunos = 3;
 
 void menu();
+void recebe_string(char *string, int tam);
 
 typedef struct{
     int matricula;
@@ -35,10 +36,21 @@ int main(){
             case 1:{
                 puts("Cadastrar Aluno:\n");
                 puts("Digite o Nome:\n");
-                fgets(Lista_alunos[num_aluno].nome, 100, stdin);
-                getchar();
-                puts("\t2 - Professor:\n");
-                puts("\t2 - Disciplina:\n");
+                recebe_string(Lista_alunos[num_aluno].nome, 100);
+                puts("Digite o dia, mês e ano de nascimento em números:\n");
+                puts("Dia (formato DD):\n");
+                scanf("%d",Lista_alunos[num_aluno].nome[0]);
+                puts("Mês (Formato MM):\n");
+                scanf("%d",Lista_alunos[num_aluno].nome[1]);
+                puts("Ano (Formato AAAA):\n");
+                scanf("%d",Lista_alunos[num_aluno].nome[2]);
+                puts("Digite seu CPF:\n");
+                scanf("%d",Lista_alunos[num_aluno].cpf);
+                puts("Digite seu gênero (M ou F):\n");
+                scanf("%c",Lista_alunos[num_aluno].genero);
+                Lista_alunos[num_aluno].aluno_ou_professor = 'A';
+                Lista_alunos[num_aluno].matricula = num_aluno + 1;
+                num_aluno ++;
                 getchar();
                 break;
             }
@@ -60,7 +72,10 @@ int main(){
     }
     return 0;
 }
-
+void recebe_string(char *string, int tamanho){
+    fgets(string, tamanho, stdin);
+    string[strcspn(*string, "\n")] = '\0';
+}
 void menu(){
     puts("PROJETO ESCOLA\n\n");
 
