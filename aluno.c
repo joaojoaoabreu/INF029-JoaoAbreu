@@ -39,9 +39,17 @@ int main(){
                 puts("Digite o Nome:\n");
                 recebe_string(Lista_alunos[num_aluno].nome, 100);
                 recebe_data(&Lista_alunos[num_aluno].data_nascimento[0], &Lista_alunos[num_aluno].data_nascimento[1], &Lista_alunos[num_aluno].data_nascimento[2]);
-                puts("Digite seu CPF:\n");
+                puts("Digite o CPF:\n");
                 scanf("%d",&Lista_alunos[num_aluno].cpf);
-                puts("Digite seu gênero (M ou F):\n");
+                do{
+					puts("Digite o gênero (M - Masculino | F - Feminino):");
+					scanf("%c", &Lista_alunos[num_aluno].genero);
+					getchar();
+
+					if(Lista_alunos[num_aluno].genero == 'm' || Lista_alunos[num_aluno].genero == 'f')
+						Lista_alunos[num_aluno].genero -= 32;
+
+				} while(Lista_alunos[num_aluno].genero != 'M' && Lista_alunos[num_aluno].genero != 'F');
                 scanf("%c",&Lista_alunos[num_aluno].genero);
                 Lista_alunos[num_aluno].aluno_ou_professor = 'A';
                 Lista_alunos[num_aluno].matricula = num_aluno + 1;
@@ -73,11 +81,13 @@ void recebe_data(int *dia, int *mes, int *ano){
         do{
             puts("Dia (formato DD):\n");
             scanf("%d",dia);
+            getchar();
             if(*dia>31 || *dia<1) puts("Dia é um número entre 1 e 31\n");
         } while(*dia>31 || *dia<1);
         do{
             puts("Mês (Formato MM):\n");
             scanf("%d",mes);
+            getchar();
             if(*mes>12) puts("Dia é um número entre 1 e 12\n");
         } while(*mes>12 || *mes<1);
         if((*dia>29 && *mes ==2)||(*dia>30 && *mes ==4)||(*dia>30 && *mes ==6)||(*dia>30 && *mes ==9)||(*dia>30 && *mes ==11)) puts("Data Inválida.\n");
@@ -86,6 +96,7 @@ void recebe_data(int *dia, int *mes, int *ano){
     do{
         puts("Ano (formato AAAA):\n");
         scanf("%d",ano);
+        getchar();
         if(*ano>2026) puts("Você não nasceu no futuro.\n");
     } while(*ano>2026);
 }
