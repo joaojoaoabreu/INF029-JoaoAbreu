@@ -38,9 +38,13 @@ int main(){
                 puts("Cadastrar Aluno:\n");
                 puts("Digite o Nome:\n");
                 recebe_string(Lista_alunos[num_aluno].nome, 100);
+
                 recebe_data(&Lista_alunos[num_aluno].data_nascimento[0], &Lista_alunos[num_aluno].data_nascimento[1], &Lista_alunos[num_aluno].data_nascimento[2]);
+
                 puts("Digite o CPF:\n");
                 scanf("%d",&Lista_alunos[num_aluno].cpf);
+                getchar();
+
                 do{
 					puts("Digite o gênero (M - Masculino | F - Feminino):");
 					scanf("%c", &Lista_alunos[num_aluno].genero);
@@ -50,7 +54,7 @@ int main(){
 						Lista_alunos[num_aluno].genero -= 32;
 
 				} while(Lista_alunos[num_aluno].genero != 'M' && Lista_alunos[num_aluno].genero != 'F');
-                scanf("%c",&Lista_alunos[num_aluno].genero);
+
                 Lista_alunos[num_aluno].aluno_ou_professor = 'A';
                 Lista_alunos[num_aluno].matricula = num_aluno + 1;
                 num_aluno ++;
@@ -66,6 +70,9 @@ int main(){
                 break;
             }
             case 4:{
+                for(int i=0; i<num_aluno; i++){
+                    printf("Nome: %s\tNascimento: %d/%d/%d \tCPF:%d \tGênero:%c \tMatrícula:%d\n", Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].matricula);
+                }
                 break;
             }
             default:{
