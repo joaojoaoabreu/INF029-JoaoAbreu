@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-define limite_alunos = 3;
+#define limite_alunos 3
 
 void menu();
 void recebe_string(char *string, int tam);
@@ -39,15 +39,15 @@ int main(){
                 recebe_string(Lista_alunos[num_aluno].nome, 100);
                 puts("Digite o dia, mês e ano de nascimento em números:\n");
                 puts("Dia (formato DD):\n");
-                scanf("%d",Lista_alunos[num_aluno].nome[0]);
+                scanf("%d",&Lista_alunos[num_aluno].data_nascimento[0]);
                 puts("Mês (Formato MM):\n");
-                scanf("%d",Lista_alunos[num_aluno].nome[1]);
+                scanf("%d",&Lista_alunos[num_aluno].data_nascimento[1]);
                 puts("Ano (Formato AAAA):\n");
-                scanf("%d",Lista_alunos[num_aluno].nome[2]);
+                scanf("%d",&Lista_alunos[num_aluno].data_nascimento[2]);
                 puts("Digite seu CPF:\n");
-                scanf("%d",Lista_alunos[num_aluno].cpf);
+                scanf("%d",&Lista_alunos[num_aluno].cpf);
                 puts("Digite seu gênero (M ou F):\n");
-                scanf("%c",Lista_alunos[num_aluno].genero);
+                scanf("%c",&Lista_alunos[num_aluno].genero);
                 Lista_alunos[num_aluno].aluno_ou_professor = 'A';
                 Lista_alunos[num_aluno].matricula = num_aluno + 1;
                 num_aluno ++;
@@ -74,7 +74,7 @@ int main(){
 }
 void recebe_string(char *string, int tamanho){
     fgets(string, tamanho, stdin);
-    string[strcspn(*string, "\n")] = '\0';
+    string[strcspn(string, "\n")] = '\0';
 }
 void menu(){
     puts("PROJETO ESCOLA\n\n");
