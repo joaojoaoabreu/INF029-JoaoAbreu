@@ -71,7 +71,7 @@ int main(){
             case 4:{
                 puts("Lista de Alunos");
                 for(int i=0; i<num_aluno; i++){
-                    printf("Nome: %s\tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c \tMatrícula:%d\n", Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].matricula);
+                    printf("Nome: %s \tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c \tMatrícula:%d\n", Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].matricula);
                 }
                 getchar();
                 break;
