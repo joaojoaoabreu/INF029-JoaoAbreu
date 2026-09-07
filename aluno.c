@@ -4,6 +4,7 @@
 
 void menu();
 void recebe_string(char *string, int tam);
+void recebe_data(int *dia, int *mes, int *ano);
 
 typedef struct{
     int matricula;
@@ -37,13 +38,7 @@ int main(){
                 puts("Cadastrar Aluno:\n");
                 puts("Digite o Nome:\n");
                 recebe_string(Lista_alunos[num_aluno].nome, 100);
-                puts("Digite o dia, mês e ano de nascimento em números:\n");
-                puts("Dia (formato DD):\n");
-                scanf("%d",&Lista_alunos[num_aluno].data_nascimento[0]);
-                puts("Mês (Formato MM):\n");
-                scanf("%d",&Lista_alunos[num_aluno].data_nascimento[1]);
-                puts("Ano (Formato AAAA):\n");
-                scanf("%d",&Lista_alunos[num_aluno].data_nascimento[2]);
+                recebe_data(&Lista_alunos[num_aluno].data_nascimento[0], &Lista_alunos[num_aluno].data_nascimento[1], &Lista_alunos[num_aluno].data_nascimento[2]);
                 puts("Digite seu CPF:\n");
                 scanf("%d",&Lista_alunos[num_aluno].cpf);
                 puts("Digite seu gênero (M ou F):\n");
@@ -71,6 +66,28 @@ int main(){
         }
     }
     return 0;
+}
+void recebe_data(int *dia, int *mes, int *ano){
+    puts("Digite o dia, mês e ano de nascimento em números:\n");
+    do{
+        do{
+            puts("Dia (formato DD):\n");
+            scanf("%d",dia);
+            if(*dia>31 || *dia<1) puts("Dia é um número entre 1 e 31\n");
+        } while(*dia>31 || *dia<1);
+        do{
+            puts("Mês (Formato MM):\n");
+            scanf("%d",mes);
+            if(*mes>12) puts("Dia é um número entre 1 e 12\n");
+        } while(*mes>12 || *mes<1);
+        if((*dia>29 && *mes ==2)||(*dia>30 && *mes ==4)||(*dia>30 && *mes ==6)||(*dia>30 && *mes ==9)||(*dia>30 && *mes ==11)) puts("Data Inválida.\n");
+    }while((*dia>29 && *mes ==2)||(*dia>30 && *mes ==4)||(*dia>30 && *mes ==6)||(*dia>30 && *mes ==9)||(*dia>30 && *mes ==11));
+    puts("Ano (Formato AAAA):\n");
+    do{
+        puts("Ano (formato AAAA):\n");
+        scanf("%d",ano);
+        if(*ano>2026) puts("Você não nasceu no futuro.\n");
+    } while(*ano>2026);
 }
 void recebe_string(char *string, int tamanho){
     fgets(string, tamanho, stdin);
