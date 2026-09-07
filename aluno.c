@@ -10,7 +10,7 @@ typedef struct{
     int matricula;
     char nome[100];
     int data_nascimento[3];
-    int cpf;
+    long long cpf;
     int disciplinas[10];
     char genero;
     char aluno_ou_professor;
@@ -42,7 +42,7 @@ int main(){
                 recebe_data(&Lista_alunos[num_aluno].data_nascimento[0], &Lista_alunos[num_aluno].data_nascimento[1], &Lista_alunos[num_aluno].data_nascimento[2]);
 
                 puts("Digite o CPF:\n");
-                scanf("%d",&Lista_alunos[num_aluno].cpf);
+                scanf("%lld",&Lista_alunos[num_aluno].cpf);
                 getchar();
 
                 do{
@@ -58,7 +58,6 @@ int main(){
                 Lista_alunos[num_aluno].aluno_ou_professor = 'A';
                 Lista_alunos[num_aluno].matricula = num_aluno + 1;
                 num_aluno ++;
-                getchar();
                 break;
             }
             case 2:{
@@ -70,9 +69,11 @@ int main(){
                 break;
             }
             case 4:{
+                puts("Lista de Alunos");
                 for(int i=0; i<num_aluno; i++){
-                    printf("Nome: %s\tNascimento: %d/%d/%d \tCPF:%d \tGênero:%c \tMatrícula:%d\n", Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].matricula);
+                    printf("Nome: %s\tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c \tMatrícula:%d\n", Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].matricula);
                 }
+                getchar();
                 break;
             }
             default:{
