@@ -3,6 +3,8 @@
 #define limite_alunos 3
 #define CADASTRO_SUCESSO -1
 #define CADASTRO_ERRO -2
+#define DELETADO_SUCESSO -3
+#define DELETADO_ERRO -4
 
 typedef struct{
     int matricula;
@@ -20,6 +22,8 @@ void recebe_string(char *string, int tam);
 void recebe_data(int *dia, int *mes, int *ano);
 void Listar(Pessoa Lista_alunos[], int num_aluno);
 int Cadastrar(Pessoa Lista_alunos[], int num_aluno);
+void Alterar(Pessoa Lista_alunos[], int num_aluno);
+int Deletar(Pessoa Lista_alunos[], int num_aluno);
 
 int main(){
     int opcao;
@@ -46,11 +50,14 @@ int main(){
                 break;
             }
             case 2:{
-
+                Alterar(Lista_alunos, num_aluno);
                 break;
             }
             case 3:{
-
+                int del = Deletar(Lista_alunos, num_aluno);
+                if(del==DELETADO_SUCESSO){
+                    num_aluno --;
+                }
                 break;
             }
             case 4:{
@@ -111,7 +118,7 @@ void Listar(Pessoa Lista_alunos[], int num_aluno){
     else{
         puts("**********\nLISTA DE ALUNOS\n**********\n");
         for(int i=0; i<num_aluno; i++){
-            printf("Nome: %s \tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c \tMatrícula:%d\n", Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].matricula);
+            printf("%d - Matrícula:%d \tNome: %s \tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c\n", i+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero);
         }
     }
     puts("\n");
@@ -146,5 +153,61 @@ int Cadastrar(Pessoa Lista_alunos[], int num_aluno){
     else{
         puts("Não é possível cadastrar mais alunos.");
         return CADASTRO_ERRO;
+    }
+}
+
+void Alterar(Pessoa Lista_alunos[], int num_aluno){
+    Listar(Lista_alunos, num_aluno);
+    puts("**********\nDIGITE O NÚMERO DE MATRÍCULA DO ALUNO QUE VOCÊ QUER ALTERAR\n**********\n");
+    int opcao;
+    scanf("%d", &opcao);
+    getchar();
+    int alterado=0;
+    for(int i=0; i<=num_aluno; i++){
+        if(Lista_alunos[i].matricula == opcao){
+            puts("Digite o Nome:\n");
+            recebe_string(Lista_alunos[i].nome, 100);
+
+            recebe_data(&Lista_alunos[i].data_nascimento[0], &Lista_alunos[i].data_nascimento[1], &Lista_alunos[i].data_nascimento[2]);
+
+            puts("Digite o CPF:\n");
+            scanf("%lld",&Lista_alunos[num_aluno].cpf);
+            getchar();
+
+            do{
+                puts("Digite o gênero (M - Masculino | F - Feminino):");
+                scanf("%c", &Lista_alunos[i].genero);
+                getchar();
+
+                if(Lista_alunos[i].genero == 'm' || Lista_alunos[i].genero == 'f')
+                Lista_alunos[i].genero -= 32;
+
+            } while(Lista_alunos[i].genero != 'M' && Lista_alunos[i].genero != 'F');
+            alterado=1;
+        }
+        if(i>num_aluno && alterado==1){
+            puts("Número de matrícula não encontrado.");
+        }
+    }
+
+}
+
+int Deletar(Pessoa Lista_alunos[], int num_aluno){
+    Listar(Lista_alunos, num_aluno);
+
+    int opcao;
+    do{
+        puts("**********\nDIGITE O NÚMERO DE MATRÍCULA DO ALUNO QUE VOCÊ QUER DELETAR OU 0 PARA CANCELAR\n**********\n");
+        scanf("%d", &opcao);
+        getchar();
+    }while(opcao<=num_aluno);
+    if(opcao==0) return DELETADO_ERRO;
+    else{
+        for(int i=0; i<num_aluno; i++){
+            if(Lista_alunos[i].matricula == opcao){
+                Lista_alunos[i] = Lista_alunos[i+1];
+            }
+        }
+        return DELETADO_SUCESSO;
     }
 }
