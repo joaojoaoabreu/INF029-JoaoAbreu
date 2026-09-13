@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #define limite_alunos 3
-
-void menu();
-void recebe_string(char *string, int tam);
-void recebe_data(int *dia, int *mes, int *ano);
+#define CADASTRO_SUCESSO -1
+#define CADASTRO_ERRO -2
 
 typedef struct{
     int matricula;
@@ -16,6 +14,12 @@ typedef struct{
     char aluno_ou_professor;
 
 }Pessoa;
+
+void menu();
+void recebe_string(char *string, int tam);
+void recebe_data(int *dia, int *mes, int *ano);
+void Listar(Pessoa Lista_alunos[], int num_aluno);
+int Cadastrar(Pessoa Lista_alunos[], int num_aluno);
 
 int main(){
     int opcao;
@@ -35,29 +39,10 @@ int main(){
                 break;
             }
             case 1:{
-                puts("Cadastrar Aluno:\n");
-                puts("Digite o Nome:\n");
-                recebe_string(Lista_alunos[num_aluno].nome, 100);
-
-                recebe_data(&Lista_alunos[num_aluno].data_nascimento[0], &Lista_alunos[num_aluno].data_nascimento[1], &Lista_alunos[num_aluno].data_nascimento[2]);
-
-                puts("Digite o CPF:\n");
-                scanf("%lld",&Lista_alunos[num_aluno].cpf);
-                getchar();
-
-                do{
-					puts("Digite o gênero (M - Masculino | F - Feminino):");
-					scanf("%c", &Lista_alunos[num_aluno].genero);
-					getchar();
-
-					if(Lista_alunos[num_aluno].genero == 'm' || Lista_alunos[num_aluno].genero == 'f')
-						Lista_alunos[num_aluno].genero -= 32;
-
-				} while(Lista_alunos[num_aluno].genero != 'M' && Lista_alunos[num_aluno].genero != 'F');
-
-                Lista_alunos[num_aluno].aluno_ou_professor = 'A';
-                Lista_alunos[num_aluno].matricula = num_aluno + 1;
-                num_aluno ++;
+                int cad = Cadastrar(Lista_alunos, num_aluno);
+                if(cad==CADASTRO_SUCESSO){
+                    num_aluno ++;
+                }
                 break;
             }
             case 2:{
@@ -69,10 +54,7 @@ int main(){
                 break;
             }
             case 4:{
-                puts("Lista de Alunos");
-                for(int i=0; i<num_aluno; i++){
-                    printf("Nome: %s \tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c \tMatrícula:%d\n", Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].matricula);
-                }
+                Listar(Lista_alunos, num_aluno);
                 getchar();
                 break;
             }
@@ -100,7 +82,6 @@ void recebe_data(int *dia, int *mes, int *ano){
         } while(*mes>12 || *mes<1);
         if((*dia>29 && *mes ==2)||(*dia>30 && *mes ==4)||(*dia>30 && *mes ==6)||(*dia>30 && *mes ==9)||(*dia>30 && *mes ==11)) puts("Data Inválida.\n");
     }while((*dia>29 && *mes ==2)||(*dia>30 && *mes ==4)||(*dia>30 && *mes ==6)||(*dia>30 && *mes ==9)||(*dia>30 && *mes ==11));
-    puts("Ano (Formato AAAA):\n");
     do{
         puts("Ano (formato AAAA):\n");
         scanf("%d",ano);
@@ -122,4 +103,48 @@ void menu(){
     puts("\t2 - Alterar Aluno");
     puts("\t3 - Excluir Aluno");
     puts("\t4 - Listar Alunos");
+}
+void Listar(Pessoa Lista_alunos[], int num_aluno){
+    if(num_aluno==0){
+        puts("**********\nLISTA VAZIA\n**********\n");
+    }
+    else{
+        puts("**********\nLISTA DE ALUNOS\n**********\n");
+        for(int i=0; i<num_aluno; i++){
+            printf("Nome: %s \tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c \tMatrícula:%d\n", Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].matricula);
+        }
+    }
+    puts("\n");
+}
+int Cadastrar(Pessoa Lista_alunos[], int num_aluno){
+    if(num_aluno<limite_alunos){
+
+        puts("Cadastrar Aluno:\n");
+        puts("Digite o Nome:\n");
+        recebe_string(Lista_alunos[num_aluno].nome, 100);
+
+        recebe_data(&Lista_alunos[num_aluno].data_nascimento[0], &Lista_alunos[num_aluno].data_nascimento[1], &Lista_alunos[num_aluno].data_nascimento[2]);
+
+        puts("Digite o CPF:\n");
+        scanf("%lld",&Lista_alunos[num_aluno].cpf);
+        getchar();
+
+        do{
+            puts("Digite o gênero (M - Masculino | F - Feminino):");
+            scanf("%c", &Lista_alunos[num_aluno].genero);
+            getchar();
+
+            if(Lista_alunos[num_aluno].genero == 'm' || Lista_alunos[num_aluno].genero == 'f')
+                Lista_alunos[num_aluno].genero -= 32;
+
+        } while(Lista_alunos[num_aluno].genero != 'M' && Lista_alunos[num_aluno].genero != 'F');
+
+        Lista_alunos[num_aluno].aluno_ou_professor = 'A';
+        Lista_alunos[num_aluno].matricula = num_aluno + 1;
+        return CADASTRO_SUCESSO;
+    }
+    else{
+        puts("Não é possível cadastrar mais alunos.");
+        return CADASTRO_ERRO;
+    }
 }
