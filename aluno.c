@@ -24,6 +24,7 @@ void Listar(Pessoa Lista_alunos[], int num_aluno);
 int Cadastrar(Pessoa Lista_alunos[], int num_aluno);
 void Alterar(Pessoa Lista_alunos[], int num_aluno);
 int Deletar(Pessoa Lista_alunos[], int num_aluno);
+void marcador_titulo(int tamanho);
 
 int main(){
     int opcao;
@@ -73,37 +74,71 @@ int main(){
     return 0;
 }
 void recebe_data(int *dia, int *mes, int *ano){
-    puts("Digite o dia, mês e ano de nascimento em números:\n");
+    marcador_titulo(48);
+    puts("*****DIGITE O DIA, MÊS E ANO DE NASCIMENTO:*****");
+    marcador_titulo(48);\
     do{
         do{
-            puts("Dia (formato DD):\n");
+            puts("\n");
+            puts("DIA:");
+
             scanf("%d",dia);
             getchar();
-            if(*dia>31 || *dia<1) puts("Dia é um número entre 1 e 31\n");
+
+            if(*dia>31 || *dia<1){
+
+                puts("\n");
+                marcador_titulo(38);
+                puts("*****DIA É UM NÚMERO ENTRE 1 E 31*****");
+                marcador_titulo(38);
+            }
         } while(*dia>31 || *dia<1);
         do{
-            puts("Mês (Formato MM):\n");
+            puts("\n");
+            puts("MÊS:");
             scanf("%d",mes);
             getchar();
-            if(*mes>12) puts("Dia é um número entre 1 e 12\n");
+
+            if(*mes>12){
+                puts("\n");
+                marcador_titulo(38);
+                puts("*****MÊS É UM NÚMERO ENTRE 1 E 12*****\n");
+                marcador_titulo(38);
+            }
         } while(*mes>12 || *mes<1);
-        if((*dia>29 && *mes ==2)||(*dia>30 && *mes ==4)||(*dia>30 && *mes ==6)||(*dia>30 && *mes ==9)||(*dia>30 && *mes ==11)) puts("Data Inválida.\n");
+        if((*dia>29 && *mes ==2)||(*dia>30 && *mes ==4)||(*dia>30 && *mes ==6)||(*dia>30 && *mes ==9)||(*dia>30 && *mes ==11)){
+            marcador_titulo(23);
+            puts("*****DATA INVÁLIDA*****");
+            marcador_titulo(23);
+        }
     }while((*dia>29 && *mes ==2)||(*dia>30 && *mes ==4)||(*dia>30 && *mes ==6)||(*dia>30 && *mes ==9)||(*dia>30 && *mes ==11));
     do{
-        puts("Ano (formato AAAA):\n");
+        puts("\n");
+        puts("ANO(FORMATO AAAA):");
         scanf("%d",ano);
         getchar();
-        if(*ano>2026) puts("Você não nasceu no futuro.\n");
-    } while(*ano>2026);
+        if(*ano>2026 ||*ano<1900){
+            puts("\n");
+            marcador_titulo(22);
+            puts("*****ANO INVÁLIDO*****");
+            marcador_titulo(22);
+        }
+    } while(*ano>2026 || *ano<1900);
 }
 void recebe_string(char *string, int tamanho){
     fgets(string, tamanho, stdin);
     string[strcspn(string, "\n")] = '\0';
 }
 void menu(){
-    puts("PROJETO ESCOLA\n\n");
+    marcador_titulo(30);
+    puts("********PROJETO ESCOLA********");
+    marcador_titulo(30);
+    puts("\n");
 
-    puts("Escolha uma opção:");
+    marcador_titulo(25);
+    puts("****ESCOLHA UMA OPÇÃO****");
+    marcador_titulo(25);
+    puts("\n");
 
     puts("\t0 - Sair");
     puts("\t1 - Cadastrar Aluno");
@@ -113,10 +148,14 @@ void menu(){
 }
 void Listar(Pessoa Lista_alunos[], int num_aluno){
     if(num_aluno==0){
-        puts("**********\nLISTA VAZIA\n**********\n");
+        marcador_titulo(30);
+        puts("*****LISTA VAZIA*****");
+        marcador_titulo(30);
     }
     else{
-        puts("**********\nLISTA DE ALUNOS\n**********\n");
+        marcador_titulo(30);
+        puts("*****LISTA DE ALUNOS*****");
+        marcador_titulo(30);
         for(int i=0; i<num_aluno; i++){
             printf("%d - Matrícula:%d \tNome: %s \tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c\n", i+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero);
         }
@@ -125,19 +164,24 @@ void Listar(Pessoa Lista_alunos[], int num_aluno){
 }
 int Cadastrar(Pessoa Lista_alunos[], int num_aluno){
     if(num_aluno<limite_alunos){
+        marcador_titulo(29);
+        puts("*******CADASTRAR ALUNO*******");
+        marcador_titulo(29);
+        puts("\n");
 
-        puts("Cadastrar Aluno:\n");
-        puts("Digite o Nome:\n");
+        puts("DIGITE O NOME:");
+
         recebe_string(Lista_alunos[num_aluno].nome, 100);
 
         recebe_data(&Lista_alunos[num_aluno].data_nascimento[0], &Lista_alunos[num_aluno].data_nascimento[1], &Lista_alunos[num_aluno].data_nascimento[2]);
+        puts("\n");
+        puts("DIGITE O CPF:");
 
-        puts("Digite o CPF:\n");
         scanf("%lld",&Lista_alunos[num_aluno].cpf);
         getchar();
-
         do{
-            puts("Digite o gênero (M - Masculino | F - Feminino):");
+            puts("\n");
+            puts("DIGITE O GÊNERO (M - MASCULINO | F - FEMININO):");
             scanf("%c", &Lista_alunos[num_aluno].genero);
             getchar();
 
@@ -151,31 +195,39 @@ int Cadastrar(Pessoa Lista_alunos[], int num_aluno){
         return CADASTRO_SUCESSO;
     }
     else{
-        puts("Não é possível cadastrar mais alunos.");
+        puts("\n");
+        marcador_titulo(40);
+        puts("**NÃO É POSSÍVEL CADASTRAR MAIS ALUNOS**");
+        marcador_titulo(40);
         return CADASTRO_ERRO;
     }
 }
 
 void Alterar(Pessoa Lista_alunos[], int num_aluno){
     Listar(Lista_alunos, num_aluno);
-    puts("**********\nDIGITE O NÚMERO DE MATRÍCULA DO ALUNO QUE VOCÊ QUER ALTERAR\n**********\n");
+    puts("\n");
+    marcador_titulo(63);
+    puts("**DIGITE O NÚMERO DE MATRÍCULA DO ALUNO QUE VOCÊ QUER ALTERAR**\n");
+    marcador_titulo(63);
     int opcao;
     scanf("%d", &opcao);
     getchar();
     int alterado=0;
     for(int i=0; i<=num_aluno; i++){
         if(Lista_alunos[i].matricula == opcao){
-            puts("Digite o Nome:\n");
+            puts("/n");
+            puts("DIGITE O NOME:");
+            marcador_titulo(35);
             recebe_string(Lista_alunos[i].nome, 100);
-
             recebe_data(&Lista_alunos[i].data_nascimento[0], &Lista_alunos[i].data_nascimento[1], &Lista_alunos[i].data_nascimento[2]);
-
-            puts("Digite o CPF:\n");
+            puts("/n");
+            puts("DIGITE O CPF:");
             scanf("%lld",&Lista_alunos[num_aluno].cpf);
             getchar();
 
             do{
-                puts("Digite o gênero (M - Masculino | F - Feminino):");
+                puts("/n");
+                puts("DIGITE O GÊNERO (M - MASCULINO | F - FEMININO):");
                 scanf("%c", &Lista_alunos[i].genero);
                 getchar();
 
@@ -186,7 +238,9 @@ void Alterar(Pessoa Lista_alunos[], int num_aluno){
             alterado=1;
         }
         if(i>num_aluno && alterado==1){
-            puts("Número de matrícula não encontrado.");
+            marcador_titulo(35);
+            puts("**NÚMERO DE MATRÍCULA NÃO ENCONTRADO**");
+            marcador_titulo(35);
         }
     }
 
@@ -197,17 +251,23 @@ int Deletar(Pessoa Lista_alunos[], int num_aluno){
 
     int opcao;
     do{
-        puts("**********\nDIGITE O NÚMERO DE MATRÍCULA DO ALUNO QUE VOCÊ QUER DELETAR OU 0 PARA CANCELAR\n**********\n");
+        marcador_titulo(35);
+        puts("**DIGITE O NÚMERO REFERENTE AO ALUNO QUE VOCÊ QUER DELETAR OU 0 PARA CANCELAR**");
+        marcador_titulo(35);
         scanf("%d", &opcao);
         getchar();
-    }while(opcao<=num_aluno);
+    }while(opcao > num_aluno+1 || opcao < 0);
     if(opcao==0) return DELETADO_ERRO;
     else{
-        for(int i=0; i<num_aluno; i++){
-            if(Lista_alunos[i].matricula == opcao){
-                Lista_alunos[i] = Lista_alunos[i+1];
-            }
+        for(int i=opcao; i<num_aluno; i++){
+            Lista_alunos[i-1] = Lista_alunos[i];
         }
         return DELETADO_SUCESSO;
     }
+}
+void marcador_titulo(int tamanho){
+    for(int i=0; i<tamanho; i++){
+        printf("*");
+    }
+    printf("\n");
 }
