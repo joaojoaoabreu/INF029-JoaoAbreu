@@ -21,7 +21,7 @@ void menu();
 void recebe_string(char *string, int tam);
 void recebe_data(int *dia, int *mes, int *ano);
 void Listar(Pessoa Lista_alunos[], int num_aluno);
-int Cadastrar(Pessoa Lista_alunos[], int num_aluno);
+int Cadastrar(Pessoa Lista_alunos[], int num_aluno, int matricula);
 void Alterar(Pessoa Lista_alunos[], int num_aluno);
 int Deletar(Pessoa Lista_alunos[], int num_aluno);
 void marcador_titulo(int tamanho);
@@ -31,6 +31,7 @@ int main(){
     int sair=0;
     Pessoa Lista_alunos[limite_alunos];
     int num_aluno=0;
+    int matricula=1;
 
     while(sair==0){
         menu();
@@ -44,9 +45,10 @@ int main(){
                 break;
             }
             case 1:{
-                int cad = Cadastrar(Lista_alunos, num_aluno);
+                int cad = Cadastrar(Lista_alunos, num_aluno, matricula);
                 if(cad==CADASTRO_SUCESSO){
                     num_aluno ++;
+                    matricula ++;
                 }
                 break;
             }
@@ -74,6 +76,7 @@ int main(){
     return 0;
 }
 void recebe_data(int *dia, int *mes, int *ano){
+    puts("\n");
     marcador_titulo(48);
     puts("*****DIGITE O DIA, MÊS E ANO DE NASCIMENTO:*****");
     marcador_titulo(48);\
@@ -148,22 +151,26 @@ void menu(){
 }
 void Listar(Pessoa Lista_alunos[], int num_aluno){
     if(num_aluno==0){
-        marcador_titulo(30);
+        marcador_titulo(25);
         puts("*****LISTA VAZIA*****");
-        marcador_titulo(30);
+        marcador_titulo(25);
+        puts("\n");
     }
     else{
-        marcador_titulo(30);
+        puts("\n");
+        marcador_titulo(25);
         puts("*****LISTA DE ALUNOS*****");
-        marcador_titulo(30);
+        marcador_titulo(25);
+        puts("\n");
         for(int i=0; i<num_aluno; i++){
             printf("%d - Matrícula:%d \tNome: %s \tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c\n", i+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero);
         }
     }
     puts("\n");
 }
-int Cadastrar(Pessoa Lista_alunos[], int num_aluno){
+int Cadastrar(Pessoa Lista_alunos[], int num_aluno, int matricula){
     if(num_aluno<limite_alunos){
+        puts("\n");
         marcador_titulo(29);
         puts("*******CADASTRAR ALUNO*******");
         marcador_titulo(29);
@@ -191,7 +198,7 @@ int Cadastrar(Pessoa Lista_alunos[], int num_aluno){
         } while(Lista_alunos[num_aluno].genero != 'M' && Lista_alunos[num_aluno].genero != 'F');
 
         Lista_alunos[num_aluno].aluno_ou_professor = 'A';
-        Lista_alunos[num_aluno].matricula = num_aluno + 1;
+        Lista_alunos[num_aluno].matricula = matricula;
         return CADASTRO_SUCESSO;
     }
     else{
@@ -199,6 +206,7 @@ int Cadastrar(Pessoa Lista_alunos[], int num_aluno){
         marcador_titulo(40);
         puts("**NÃO É POSSÍVEL CADASTRAR MAIS ALUNOS**");
         marcador_titulo(40);
+        puts("\n");
         return CADASTRO_ERRO;
     }
 }
