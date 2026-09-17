@@ -1,76 +1,116 @@
 #include <stdio.h>
 #include <string.h>
 #define limite_alunos 3
+#define limite_professores 3
+#define limite_aluno_por_disciplina 30
+#define limite_disciplinas_por_aluno 10
 #define CADASTRO_SUCESSO -1
 #define CADASTRO_ERRO -2
 #define DELETADO_SUCESSO -3
 #define DELETADO_ERRO -4
 
 typedef struct{
+    int codigo;
+    char nome;
+    int semestre;
+    int professor;
+    int alunos[limite_aluno_por_disciplina];
+
+}Disciplina;
+
+typedef struct{
     int matricula;
     char nome[100];
     int data_nascimento[3];
     long long cpf;
-    int disciplinas[10];
+    int disciplinas[limite_disciplinas_por_aluno];
     char genero;
     char aluno_ou_professor;
 
 }Pessoa;
 
 void menu();
+void menu_aluno();
 void recebe_string(char *string, int tam);
 void recebe_data(int *dia, int *mes, int *ano);
-void Listar(Pessoa Lista_alunos[], int num_aluno);
-int Cadastrar(Pessoa Lista_alunos[], int num_aluno, int matricula);
+void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno);
+int Cadastrar(Pessoa Lista_alunos[], int num_aluno);
 void Alterar(Pessoa Lista_alunos[], int num_aluno);
-int Deletar(Pessoa Lista_alunos[], int num_aluno);
+int Deletar_Aluno(Pessoa Lista_alunos[], int num_aluno);
 void marcador_titulo(int tamanho);
 
 int main(){
-    int opcao;
-    int sair=0;
     Pessoa Lista_alunos[limite_alunos];
+    Pessoa Lista_professores[limite_professores];
     int num_aluno=0;
-    int matricula=1;
+    int sair=0;
 
     while(sair==0){
         menu();
+        int opcao;
         scanf("%d", &opcao);
         getchar();
 
-
-        switch(opcao){
+        switch(opcao){ //menu principal
             case 0:{
                 sair=1;
                 break;
             }
-            case 1:{
-                int cad = Cadastrar(Lista_alunos, num_aluno, matricula);
-                if(cad==CADASTRO_SUCESSO){
-                    num_aluno ++;
-                    matricula ++;
+            case 1:{ //menu aluno
+                int voltar=0;
+                while(voltar==0){
+
+                    menu_aluno();
+                    int opcao;
+                    scanf("%d", &opcao);
+                    getchar();
+                    switch(opcao){
+                        case 0:{
+                            voltar=1;
+                            break;
+                        }
+                        case 1:{
+                            int cad = Cadastrar(Lista_alunos, num_aluno);
+                            if(cad==CADASTRO_SUCESSO){
+                                num_aluno ++;
+                            }
+                            break;
+                        }
+                        case 2:{
+                            Alterar(Lista_alunos, num_aluno);
+                            break;
+                        }
+                        case 3:{
+                            int del = Deletar_Aluno(Lista_alunos, num_aluno);
+                            if(del==DELETADO_SUCESSO){
+                                num_aluno --;
+                            }
+                            break;
+                        }
+                        case 4:{
+                            Listar_Alunos(Lista_alunos, num_aluno);
+                            puts("Aperte ENTER para voltar ao menu de aluno");
+                            getchar();
+                            break;
+                        }
+                        default:{
+                            break;
+                        }
+                    }
                 }
                 break;
             }
             case 2:{
-                Alterar(Lista_alunos, num_aluno);
                 break;
             }
             case 3:{
-                int del = Deletar(Lista_alunos, num_aluno);
-                if(del==DELETADO_SUCESSO){
-                    num_aluno --;
-                }
-                break;
-            }
-            case 4:{
-                Listar(Lista_alunos, num_aluno);
-                getchar();
                 break;
             }
             default:{
+
                 break;
-            }
+                }
+
         }
     }
     return 0;
@@ -105,7 +145,7 @@ void recebe_data(int *dia, int *mes, int *ano){
             if(*mes>12){
                 puts("\n");
                 marcador_titulo(38);
-                puts("*****MÊS É UM NÚMERO ENTRE 1 E 12*****\n");
+                puts("*****MÊS É UM NÚMERO ENTRE 1 E 12*****");
                 marcador_titulo(38);
             }
         } while(*mes>12 || *mes<1);
@@ -133,6 +173,7 @@ void recebe_string(char *string, int tamanho){
     string[strcspn(string, "\n")] = '\0';
 }
 void menu(){
+
     marcador_titulo(30);
     puts("********PROJETO ESCOLA********");
     marcador_titulo(30);
@@ -144,12 +185,31 @@ void menu(){
     puts("\n");
 
     puts("\t0 - Sair");
+    puts("\t1 - Menu Aluno");
+    puts("\t2 - Menu Professor");
+    puts("\t3 - Menu Disciplinas");
+
+}
+void menu_aluno(){
+
+    marcador_titulo(26);
+    puts("********MENU ALUNO********");
+    marcador_titulo(26);
+    puts("\n");
+
+    marcador_titulo(25);
+    puts("****ESCOLHA UMA OPÇÃO****");
+    marcador_titulo(25);
+    puts("\n");
+
+    puts("\t0 - Voltar");
     puts("\t1 - Cadastrar Aluno");
     puts("\t2 - Alterar Aluno");
-    puts("\t3 - Excluir Aluno");
+    puts("\t3 - Excluir ALuno");
     puts("\t4 - Listar Alunos");
+
 }
-void Listar(Pessoa Lista_alunos[], int num_aluno){
+void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno){
     if(num_aluno==0){
         marcador_titulo(25);
         puts("*****LISTA VAZIA*****");
@@ -168,7 +228,8 @@ void Listar(Pessoa Lista_alunos[], int num_aluno){
     }
     puts("\n");
 }
-int Cadastrar(Pessoa Lista_alunos[], int num_aluno, int matricula){
+int Cadastrar(Pessoa Lista_alunos[], int num_aluno){
+    static int matricula=1;
     if(num_aluno<limite_alunos){
         puts("\n");
         marcador_titulo(29);
@@ -199,6 +260,7 @@ int Cadastrar(Pessoa Lista_alunos[], int num_aluno, int matricula){
 
         Lista_alunos[num_aluno].aluno_ou_professor = 'A';
         Lista_alunos[num_aluno].matricula = matricula;
+        matricula++;
         return CADASTRO_SUCESSO;
     }
     else{
@@ -212,10 +274,10 @@ int Cadastrar(Pessoa Lista_alunos[], int num_aluno, int matricula){
 }
 
 void Alterar(Pessoa Lista_alunos[], int num_aluno){
-    Listar(Lista_alunos, num_aluno);
+    Listar_Alunos(Lista_alunos, num_aluno);
     puts("\n");
     marcador_titulo(63);
-    puts("**DIGITE O NÚMERO DE MATRÍCULA DO ALUNO QUE VOCÊ QUER ALTERAR**\n");
+    puts("**DIGITE O NÚMERO DE MATRÍCULA DO ALUNO QUE VOCÊ QUER ALTERAR**");
     marcador_titulo(63);
     int opcao;
     scanf("%d", &opcao);
@@ -223,18 +285,17 @@ void Alterar(Pessoa Lista_alunos[], int num_aluno){
     int alterado=0;
     for(int i=0; i<=num_aluno; i++){
         if(Lista_alunos[i].matricula == opcao){
-            puts("/n");
+            puts("\n");
             puts("DIGITE O NOME:");
-            marcador_titulo(35);
             recebe_string(Lista_alunos[i].nome, 100);
             recebe_data(&Lista_alunos[i].data_nascimento[0], &Lista_alunos[i].data_nascimento[1], &Lista_alunos[i].data_nascimento[2]);
-            puts("/n");
+            puts("\n");
             puts("DIGITE O CPF:");
             scanf("%lld",&Lista_alunos[num_aluno].cpf);
             getchar();
 
             do{
-                puts("/n");
+                puts("\n");
                 puts("DIGITE O GÊNERO (M - MASCULINO | F - FEMININO):");
                 scanf("%c", &Lista_alunos[i].genero);
                 getchar();
@@ -254,14 +315,14 @@ void Alterar(Pessoa Lista_alunos[], int num_aluno){
 
 }
 
-int Deletar(Pessoa Lista_alunos[], int num_aluno){
-    Listar(Lista_alunos, num_aluno);
+int Deletar_Aluno(Pessoa Lista_alunos[], int num_aluno){
+    Listar_Alunos(Lista_alunos, num_aluno);
 
     int opcao;
     do{
-        marcador_titulo(35);
+        marcador_titulo(79);
         puts("**DIGITE O NÚMERO REFERENTE AO ALUNO QUE VOCÊ QUER DELETAR OU 0 PARA CANCELAR**");
-        marcador_titulo(35);
+        marcador_titulo(79);
         scanf("%d", &opcao);
         getchar();
     }while(opcao > num_aluno+1 || opcao < 0);
