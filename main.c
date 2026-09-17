@@ -44,6 +44,7 @@ int main(){
     Pessoa Lista_professores[limite_professores];
     int sair=0;
     int num_aluno=0;
+    int num_professor=0;
 
     while(sair==0){
        int opcao = menu();
@@ -211,6 +212,66 @@ void menu_aluno(Pessoa Lista_alunos[], int num_aluno){
     }
 
 }
+/* void menu_professor(Pessoa Lista_professores[], int num_professor){
+
+    int voltar=0;
+    while(voltar==0){
+
+        marcador_titulo(26);
+        puts("********MENU ALUNO********");
+        marcador_titulo(26);
+        puts("\n");
+
+        marcador_titulo(25);
+        puts("****ESCOLHA UMA OPÇÃO****");
+        marcador_titulo(25);
+        puts("\n");
+
+        puts("\t0 - Voltar");
+        puts("\t1 - Cadastrar Aluno");
+        puts("\t2 - Alterar Aluno");
+        puts("\t3 - Excluir ALuno");
+        puts("\t4 - Listar Alunos");
+
+        int opcao;
+        scanf("%d", &opcao);
+        getchar();
+        switch(opcao){
+            case 0:{ //voltar para menu principal
+                voltar=1;
+                break;
+            }
+            case 1:{ //cadastrar alunos
+                int cad = Cadastrar(Lista_alunos, num_aluno);
+                if(cad==CADASTRO_SUCESSO){
+                    num_aluno ++;
+                }
+                break;
+            }
+            case 2:{ //alterar alunos
+                Alterar(Lista_alunos, num_aluno);
+                break;
+            }
+            case 3:{ //deletar alunos
+                int del = Deletar_Aluno(Lista_alunos, num_aluno);
+                if(del==DELETADO_SUCESSO){
+                    num_aluno --;
+                }
+                break;
+            }
+            case 4:{ //listar alunos
+                Listar_Alunos(Lista_alunos, num_aluno);
+                puts("Aperte ENTER para voltar ao menu de aluno");
+                getchar();
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+    }
+
+} */
 void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno){
     if(num_aluno==0){
         marcador_titulo(25);
@@ -278,41 +339,38 @@ int Cadastrar(Pessoa Lista_alunos[], int num_aluno){
 void Alterar(Pessoa Lista_alunos[], int num_aluno){
     Listar_Alunos(Lista_alunos, num_aluno);
     puts("\n");
-    marcador_titulo(63);
-    puts("**DIGITE O NÚMERO DE MATRÍCULA DO ALUNO QUE VOCÊ QUER ALTERAR**");
-    marcador_titulo(63);
+    marcador_titulo(53);
+    puts("**ESCOLHA O ALUNO CUJO CADASTRO VOCÊ QUER ATUALIZAR**");
+    marcador_titulo(53);
     int opcao;
     scanf("%d", &opcao);
     getchar();
-    int alterado=0;
-    for(int i=0; i<=num_aluno; i++){
-        if(Lista_alunos[i].matricula == opcao){
+    if(opcao<=num_aluno+1 && opcao>0){
+        opcao--;
+        puts("\n");
+        puts("DIGITE O NOME:");
+        recebe_string(Lista_alunos[opcao].nome, 100);
+        recebe_data(&Lista_alunos[opcao].data_nascimento[0], &Lista_alunos[opcao].data_nascimento[1], &Lista_alunos[opcao].data_nascimento[2]);
+        puts("\n");
+        puts("DIGITE O CPF:");
+        scanf("%lld",&Lista_alunos[opcao].cpf);
+        getchar();
+
+        do{
             puts("\n");
-            puts("DIGITE O NOME:");
-            recebe_string(Lista_alunos[i].nome, 100);
-            recebe_data(&Lista_alunos[i].data_nascimento[0], &Lista_alunos[i].data_nascimento[1], &Lista_alunos[i].data_nascimento[2]);
-            puts("\n");
-            puts("DIGITE O CPF:");
-            scanf("%lld",&Lista_alunos[num_aluno].cpf);
+            puts("DIGITE O GÊNERO (M - MASCULINO | F - FEMININO):");
+            scanf("%c", &Lista_alunos[opcao].genero);
             getchar();
 
-            do{
-                puts("\n");
-                puts("DIGITE O GÊNERO (M - MASCULINO | F - FEMININO):");
-                scanf("%c", &Lista_alunos[i].genero);
-                getchar();
+            if(Lista_alunos[opcao].genero == 'm' || Lista_alunos[opcao].genero == 'f')
+            Lista_alunos[opcao].genero -= 32;
 
-                if(Lista_alunos[i].genero == 'm' || Lista_alunos[i].genero == 'f')
-                Lista_alunos[i].genero -= 32;
-
-            } while(Lista_alunos[i].genero != 'M' && Lista_alunos[i].genero != 'F');
-            alterado=1;
-        }
-        if(i>num_aluno && alterado==1){
-            marcador_titulo(35);
-            puts("**NÚMERO DE MATRÍCULA NÃO ENCONTRADO**");
-            marcador_titulo(35);
-        }
+        } while(Lista_alunos[opcao].genero != 'M' && Lista_alunos[opcao].genero != 'F');
+    }
+    else{
+        marcador_titulo(21);
+        puts("**OPÇÃO NÃO ENCONTRADA**");
+        marcador_titulo(21);
     }
 
 }
