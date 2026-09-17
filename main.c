@@ -29,8 +29,8 @@ typedef struct{
 
 }Pessoa;
 
-void menu();
-void menu_aluno();
+int menu();
+void menu_aluno(Pessoa Lista_alunos[], int num_aluno);
 void recebe_string(char *string, int tam);
 void recebe_data(int *dia, int *mes, int *ano);
 void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno);
@@ -42,15 +42,11 @@ void marcador_titulo(int tamanho);
 int main(){
     Pessoa Lista_alunos[limite_alunos];
     Pessoa Lista_professores[limite_professores];
-    int num_aluno=0;
     int sair=0;
-    int voltar=0;
+    int num_aluno=0;
 
     while(sair==0){
-        menu();
-        int opcao;
-        scanf("%d", &opcao);
-        getchar();
+       int opcao = menu();
 
         switch(opcao){ //menu principal
             case 0:{
@@ -58,47 +54,7 @@ int main(){
                 break;
             }
             case 1:{ //menu aluno
-                voltar=0;
-                while(voltar==0){
-
-                    menu_aluno();
-                    int opcao;
-                    scanf("%d", &opcao);
-                    getchar();
-                    switch(opcao){
-                        case 0:{ //voltar para menu principal
-                            voltar=1;
-                            break;
-                        }
-                        case 1:{ //cadastrar alunos
-                            int cad = Cadastrar(Lista_alunos, num_aluno);
-                            if(cad==CADASTRO_SUCESSO){
-                                num_aluno ++;
-                            }
-                            break;
-                        }
-                        case 2:{ //alterar alunos
-                            Alterar(Lista_alunos, num_aluno);
-                            break;
-                        }
-                        case 3:{ //deletar alunos
-                            int del = Deletar_Aluno(Lista_alunos, num_aluno);
-                            if(del==DELETADO_SUCESSO){
-                                num_aluno --;
-                            }
-                            break;
-                        }
-                        case 4:{ //listar alunos
-                            Listar_Alunos(Lista_alunos, num_aluno);
-                            puts("Aperte ENTER para voltar ao menu de aluno");
-                            getchar();
-                            break;
-                        }
-                        default:{
-                            break;
-                        }
-                    }
-                }
+                menu_aluno(Lista_alunos, num_aluno);
                 break;
             }
             case 2:{
@@ -173,7 +129,7 @@ void recebe_string(char *string, int tamanho){
     fgets(string, tamanho, stdin);
     string[strcspn(string, "\n")] = '\0';
 }
-void menu(){
+int menu(){
 
     marcador_titulo(30);
     puts("********PROJETO ESCOLA********");
@@ -190,24 +146,69 @@ void menu(){
     puts("\t2 - Menu Professor");
     puts("\t3 - Menu Disciplinas");
 
+    int opcao;
+    scanf("%d", &opcao);
+    getchar();
+    return opcao;
 }
-void menu_aluno(){
+void menu_aluno(Pessoa Lista_alunos[], int num_aluno){
 
-    marcador_titulo(26);
-    puts("********MENU ALUNO********");
-    marcador_titulo(26);
-    puts("\n");
+    int voltar=0;
+    while(voltar==0){
 
-    marcador_titulo(25);
-    puts("****ESCOLHA UMA OPÇÃO****");
-    marcador_titulo(25);
-    puts("\n");
+        marcador_titulo(26);
+        puts("********MENU ALUNO********");
+        marcador_titulo(26);
+        puts("\n");
 
-    puts("\t0 - Voltar");
-    puts("\t1 - Cadastrar Aluno");
-    puts("\t2 - Alterar Aluno");
-    puts("\t3 - Excluir ALuno");
-    puts("\t4 - Listar Alunos");
+        marcador_titulo(25);
+        puts("****ESCOLHA UMA OPÇÃO****");
+        marcador_titulo(25);
+        puts("\n");
+
+        puts("\t0 - Voltar");
+        puts("\t1 - Cadastrar Aluno");
+        puts("\t2 - Alterar Aluno");
+        puts("\t3 - Excluir ALuno");
+        puts("\t4 - Listar Alunos");
+
+        int opcao;
+        scanf("%d", &opcao);
+        getchar();
+        switch(opcao){
+            case 0:{ //voltar para menu principal
+                voltar=1;
+                break;
+            }
+            case 1:{ //cadastrar alunos
+                int cad = Cadastrar(Lista_alunos, num_aluno);
+                if(cad==CADASTRO_SUCESSO){
+                    num_aluno ++;
+                }
+                break;
+            }
+            case 2:{ //alterar alunos
+                Alterar(Lista_alunos, num_aluno);
+                break;
+            }
+            case 3:{ //deletar alunos
+                int del = Deletar_Aluno(Lista_alunos, num_aluno);
+                if(del==DELETADO_SUCESSO){
+                    num_aluno --;
+                }
+                break;
+            }
+            case 4:{ //listar alunos
+                Listar_Alunos(Lista_alunos, num_aluno);
+                puts("Aperte ENTER para voltar ao menu de aluno");
+                getchar();
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+    }
 
 }
 void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno){
