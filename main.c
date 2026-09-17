@@ -264,7 +264,7 @@ int menu_professor(Pessoa Lista_professores[], int num_professor){
                     puts("Professor deletado com sucesso. Aperte ENTER para voltar ao menu de professores");
                     getchar();
                 }
-                 else puts("Nenhum professor deletado");
+                else puts("Nenhum professor deletado");
                 break;
             }
             case 4:{ //listar professores
