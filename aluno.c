@@ -11,7 +11,7 @@
 
 typedef struct{
     int codigo;
-    char nome;
+    char nome[100];
     int semestre;
     int professor;
     int alunos[limite_aluno_por_disciplina];
@@ -44,6 +44,7 @@ int main(){
     Pessoa Lista_professores[limite_professores];
     int num_aluno=0;
     int sair=0;
+    int voltar=0;
 
     while(sair==0){
         menu();
@@ -57,7 +58,7 @@ int main(){
                 break;
             }
             case 1:{ //menu aluno
-                int voltar=0;
+                voltar=0;
                 while(voltar==0){
 
                     menu_aluno();
@@ -65,29 +66,29 @@ int main(){
                     scanf("%d", &opcao);
                     getchar();
                     switch(opcao){
-                        case 0:{
+                        case 0:{ //voltar para menu principal
                             voltar=1;
                             break;
                         }
-                        case 1:{
+                        case 1:{ //cadastrar alunos
                             int cad = Cadastrar(Lista_alunos, num_aluno);
                             if(cad==CADASTRO_SUCESSO){
                                 num_aluno ++;
                             }
                             break;
                         }
-                        case 2:{
+                        case 2:{ //alterar alunos
                             Alterar(Lista_alunos, num_aluno);
                             break;
                         }
-                        case 3:{
+                        case 3:{ //deletar alunos
                             int del = Deletar_Aluno(Lista_alunos, num_aluno);
                             if(del==DELETADO_SUCESSO){
                                 num_aluno --;
                             }
                             break;
                         }
-                        case 4:{
+                        case 4:{ //listar alunos
                             Listar_Alunos(Lista_alunos, num_aluno);
                             puts("Aperte ENTER para voltar ao menu de aluno");
                             getchar();
