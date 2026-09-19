@@ -442,13 +442,13 @@ void Listar_Disciplinas_Menu(Disciplina Lista_disciplinas[], Pessoa Lista_profes
         if(opcao<=num_disciplina+1 && opcao>0){
             opcao--;
             printf("Código: %d \tNome: %s \tSemestre: %d \tProfessor: %s\n", Lista_disciplinas[opcao].codigo, Lista_disciplinas[opcao].nome, Lista_disciplinas[opcao].semestre, Lista_professores[j].nome);
-            if(Lista_disciplinas[opcao].num_alunos>0) puts("Não há alunos cadastrados nessa disciplina.");
+            if(Lista_disciplinas[opcao].num_alunos==0) puts("Não há alunos cadastrados nessa disciplina.");
             else{
                 puts("Alunos:");
                 for(int i=0;i<Lista_disciplinas[opcao].num_alunos;i++){
                     for(int j=0; j<Lista_disciplinas[opcao].num_alunos; j++){
                         if(Lista_alunos[i].matricula == Lista_disciplinas[opcao].alunos[j]){
-                            printf("\tProfessor: %s\n", Lista_alunos[i].nome);
+                            printf("\tNome: %s\tMatrícula: %d", Lista_alunos[i].nome, Lista_alunos[i].matricula);
                             break;
                         }
                     }
@@ -676,7 +676,7 @@ int Cadastrar_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professore
         Lista_disciplinas[num_disciplina].professor = Lista_professores[opcao].matricula;
         Lista_professores[opcao].disciplinas[Lista_professores[opcao].num_disciplinas]=Lista_disciplinas[num_disciplina].codigo;
         Lista_professores[opcao].num_disciplinas++;
-
+        Lista_disciplinas[num_disciplina].num_alunos = 0;
         Lista_disciplinas[num_disciplina].codigo = codigo_d;
         codigo_d++;
         return CADASTRO_SUCESSO;
