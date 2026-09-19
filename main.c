@@ -9,6 +9,8 @@
 #define CADASTRO_ERRO -2
 #define DELETADO_SUCESSO -3
 #define DELETADO_ERRO -4
+#define MATRICULA_ERRO -5
+#define MATRICULA_SUCESSO -6
 
 typedef struct{
     int codigo;
@@ -35,7 +37,7 @@ typedef struct{
 int menu();
 int menu_aluno(Pessoa Lista_alunos[], int num_aluno);
 int menu_professor(Pessoa Lista_professores[], int num_professor);
-int menu_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor);
+int menu_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor, int num_aluno);
 void recebe_string(char *string, int tam);
 void recebe_data(int *dia, int *mes, int *ano);
 void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno);
@@ -44,6 +46,7 @@ void Listar_Disciplinas_Menu(Disciplina Lista_disciplinas[], Pessoa Lista_profes
 int Cadastrar_aluno(Pessoa Lista_alunos[], int num_aluno);
 int Cadastrar_professor(Pessoa Lista_professores[], int num_professor);
 int Cadastrar_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], int num_disciplina, int num_professor);
+int Matricular_aluno(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_professor, int num_disciplina, int num_aluno);
 void Alterar(Pessoa Lista_alunos[], int num_aluno);
 void Alterar_professor(Pessoa Lista_professores[], int num_professor);
 int Deletar_Aluno(Pessoa Lista_alunos[], int num_aluno);
@@ -77,7 +80,7 @@ int main(){
                 break;
             }
             case 3:{
-                num_disciplina=menu_disciplina(Lista_disciplinas, Lista_professores, Lista_alunos, num_disciplina, num_professor);
+                num_disciplina=menu_disciplina(Lista_disciplinas, Lista_professores, Lista_alunos, num_disciplina, num_professor, num_aluno);
                 break;
             }
             default:{
@@ -290,7 +293,7 @@ int menu_professor(Pessoa Lista_professores[], int num_professor){
     }
     return num_professor;
 }
-int menu_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor){
+int menu_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor, int num_aluno){
 
     int voltar=0;
     while(voltar==0){
@@ -346,9 +349,18 @@ int menu_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
                 break;
             }
             case 5:{ //matricular aluno em disciplina
-                Listar_Disciplinas_Menu(Lista_disciplinas, Lista_professores, Lista_alunos, num_disciplina, num_professor);
-                puts("Aperte ENTER para voltar ao menu de disciplina");
-                getchar();
+                int sair_da_matricula=0;
+                while(sair_da_matricula==0){
+
+                    if( Matricular_aluno(Lista_disciplinas, Lista_professores, Lista_alunos, num_professor, num_disciplina, num_aluno) == MATRICULA_ERRO){
+                        puts("Matrícula não realizada.");
+                    }
+                    do{
+                    puts("Digite: \n\t1 para realizar outra matrícula ou \n\t0 para voltar ao menu de disciplinas.");
+                    scanf("%d", &sair_da_matricula);
+                    getchar();
+                    } while(sair_da_matricula != 0 && sair_da_matricula != 1);
+                }
                 break;
             }
             default:{
@@ -473,6 +485,70 @@ void Listar_Disciplinas(Disciplina Lista_disciplinas[], Pessoa Lista_professores
     puts("\n");
 }
 
+int Matricular_aluno(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_professor, int num_disciplina, int num_aluno){
+    if(num_disciplina==0){
+        marcador_titulo(40);
+        puts("*****NÃO HÁ DISCIPLINAS CADASTRADAS*****");
+        marcador_titulo(40);
+        puts("\n");
+
+        return MATRICULA_ERRO;
+    }
+    else if(num_aluno==0){
+        marcador_titulo(35);
+        puts("*****NÃO HÁ ALUNOS CADASTRADOS*****");
+        marcador_titulo(35);
+        puts("\n");
+
+        return MATRICULA_ERRO;
+    }
+    else{
+        int j;
+        puts("\n");
+        marcador_titulo(26);
+        puts("***ESCOLHA A DISCIPLINA***");
+        marcador_titulo(26);
+        puts("\n");
+
+        Listar_Disciplinas(Lista_disciplinas, Lista_professores, num_disciplina, num_professor);
+
+        int opcao_d;
+        scanf("%d", &opcao_d);
+        getchar();
+        if(opcao_d<=num_disciplina+1 && opcao_d>0){
+            opcao_d--;
+            puts("\n");
+            printf("Disciplina escolhida: %s", Lista_disciplinas[opcao_d].nome);
+            puts("\n");
+
+            int opcao_a;
+            do{
+                marcador_titulo(38);
+                puts("***ESCOLHA UM ALUNO PARA MATRICULAR***");
+                marcador_titulo(38);
+                puts("\n");
+                Listar_Alunos(Lista_alunos, num_aluno);
+                scanf("%d", &opcao_a);
+                opcao_a--;
+                getchar();
+                if(opcao_a>num_aluno && opcao_a<0) puts("Aluno inválido.");
+            } while(opcao_a>num_aluno && opcao_a<0);
+
+            Lista_disciplinas[opcao_d].alunos[Lista_disciplinas[opcao_d].num_alunos]=Lista_alunos[opcao_a].matricula; //insere a matrícula do aluno na relação de alunos da disciplina
+            Lista_alunos[opcao_a].disciplinas[Lista_alunos[opcao_a].num_disciplinas]=Lista_disciplinas[opcao_d].codigo; //insere o código da disciplina na relação de disciplinas do aluno
+            Lista_disciplinas[opcao_d].num_alunos ++;
+            Lista_alunos[opcao_a].num_disciplinas ++;
+            printf("Aluno %s matriculado com sucesso na diciplina %s.\n", Lista_alunos[opcao_a].nome, Lista_disciplinas[opcao_d].nome);
+
+            return MATRICULA_SUCESSO;
+        }
+        else{
+            puts("Opção inválida");
+            return MATRICULA_ERRO;
+        }
+    }
+}
+
 int Cadastrar_aluno(Pessoa Lista_alunos[], int num_aluno){
     static int matricula=1;
     if(num_aluno<limite_alunos){
@@ -567,9 +643,9 @@ int Cadastrar_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professore
     static int codigo_d=1;
     int opcao;
     if(num_professor==0){
-        marcador_titulo(58);
-        puts("**NÃO É POSSÍVEL CADASTRAR UMA DISCIPLINA SEM PROFESSORES CADASTRADOS**");
-        marcador_titulo(58);
+        marcador_titulo(77);
+        puts("**NÃO É POSSÍVEL CADASTRAR UMA DISCIPLINA SE NÃO HÁ PROFESSORES CADASTRADOS**");
+        marcador_titulo(77);
         return CADASTRO_ERRO;
     }
     if(num_disciplina<limite_disciplinas){
@@ -784,7 +860,7 @@ int Deletar_Professor(Pessoa Lista_professores[], int num_professor){
 }
 int Deletar_Disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[],Pessoa Lista_alunos[], int num_disciplina, int num_professor, int num_aluno){
     Listar_Alunos(Lista_professores, num_professor);
-
+    //Finzalizar essa função
     int opcao;
     do{
         marcador_titulo(79);
