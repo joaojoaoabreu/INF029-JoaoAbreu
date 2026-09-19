@@ -40,14 +40,15 @@ void recebe_string(char *string, int tam);
 void recebe_data(int *dia, int *mes, int *ano);
 void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno);
 void Listar_Professores(Pessoa Lista_professores[], int num_professor);
-void Listar_Disciplinas(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor);
+void Listar_Disciplinas_Menu(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor);
 int Cadastrar_aluno(Pessoa Lista_alunos[], int num_aluno);
 int Cadastrar_professor(Pessoa Lista_professores[], int num_professor);
 int Cadastrar_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], int num_disciplina, int num_professor);
 void Alterar(Pessoa Lista_alunos[], int num_aluno);
 void Alterar_professor(Pessoa Lista_professores[], int num_professor);
 int Deletar_Aluno(Pessoa Lista_alunos[], int num_aluno);
-int Deletar_Professor(Pessoa Lista_professores[], int num_professor);
+int Deletar_Professor(Pessoa Lista_professores[], int num_professor);//Adicionar verificação para matéria que o professor ensina, atualização do professor da matéria ou opção de deletar a matéria.
+int Deletar_Disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[],Pessoa Lista_alunos[], int num_disciplina, int num_professor, int num_aluno);
 void marcador_titulo(int tamanho);
 
 int main(){
@@ -309,6 +310,7 @@ int menu_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
         puts("\t2 - Alterar Disciplina");
         puts("\t3 - Excluir Disciplina");
         puts("\t4 - Listar Disciplinas");
+        puts("\t5 - Matricular Aluno em Disciplina");
 
         int opcao;
         scanf("%d", &opcao);
@@ -338,7 +340,13 @@ int menu_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
                 break;
             }
             case 4:{ //listar disciplinas
-                Listar_Disciplinas(Lista_disciplinas, Lista_professores, Lista_alunos, num_disciplina, num_professor);
+                Listar_Disciplinas_Menu(Lista_disciplinas, Lista_professores, Lista_alunos, num_disciplina, num_professor);
+                puts("Aperte ENTER para voltar ao menu de disciplina");
+                getchar();
+                break;
+            }
+            case 5:{ //matricular aluno em disciplina
+                Listar_Disciplinas_Menu(Lista_disciplinas, Lista_professores, Lista_alunos, num_disciplina, num_professor);
                 puts("Aperte ENTER para voltar ao menu de disciplina");
                 getchar();
                 break;
@@ -388,7 +396,7 @@ void Listar_Professores(Pessoa Lista_professores[], int num_professor){
     }
     puts("\n");
 }
-void Listar_Disciplinas(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor){
+void Listar_Disciplinas_Menu(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor){
     if(num_disciplina==0){
         marcador_titulo(25);
         puts("*****LISTA VAZIA*****");
@@ -402,7 +410,7 @@ void Listar_Disciplinas(Disciplina Lista_disciplinas[], Pessoa Lista_professores
         puts("***LISTA DE DISCIPLINAS***");
         marcador_titulo(26);
         puts("\n");
-        for(int i=0; i<num_professor; i++){
+        for(int i=0; i<num_disciplina; i++){
             printf("%d - Código: %d \tNome: %s \tSemestre: %d", i+1, Lista_disciplinas[i].codigo, Lista_disciplinas[i].nome, Lista_disciplinas[i].semestre);
             for(j=0; j<num_professor; j++){
                 if(Lista_professores[j].matricula == Lista_disciplinas[i].professor){
@@ -432,6 +440,32 @@ void Listar_Disciplinas(Disciplina Lista_disciplinas[], Pessoa Lista_professores
                         }
                     }
 
+                }
+            }
+        }
+    }
+    puts("\n");
+}
+void Listar_Disciplinas(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], int num_disciplina, int num_professor){
+    if(num_disciplina==0){
+        marcador_titulo(25);
+        puts("*****LISTA VAZIA*****");
+        marcador_titulo(25);
+        puts("\n");
+    }
+    else{
+        int j;
+        puts("\n");
+        marcador_titulo(26);
+        puts("***LISTA DE DISCIPLINAS***");
+        marcador_titulo(26);
+        puts("\n");
+        for(int i=0; i<num_disciplina; i++){
+            printf("%d - Código: %d \tNome: %s \tSemestre: %d", i+1, Lista_disciplinas[i].codigo, Lista_disciplinas[i].nome, Lista_disciplinas[i].semestre);
+            for(j=0; j<num_professor; j++){
+                if(Lista_professores[j].matricula == Lista_disciplinas[i].professor){
+                    printf("\tProfessor: %s\n", Lista_professores[j].nome);
+                    break;
                 }
             }
         }
@@ -621,11 +655,11 @@ void Alterar(Pessoa Lista_alunos[], int num_aluno){
 
 }
 void Alterar_professor(Pessoa Lista_professores[], int num_professor){
-    Listar_Alunos(Lista_professores, num_professor);
-    puts("\n");
     marcador_titulo(57);
     puts("**ESCOLHA O PROFESSOR CUJO CADASTRO VOCÊ QUER ATUALIZAR**");
     marcador_titulo(57);
+    Listar_Professores(Lista_professores, num_professor);
+    puts("\n");
     int opcao;
     scanf("%d", &opcao);
     getchar();
@@ -661,6 +695,54 @@ void Alterar_professor(Pessoa Lista_professores[], int num_professor){
     }
 
 }
+void Alterar_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], int num_disciplina, int num_professor){
+    marcador_titulo(58);
+    puts("**ESCOLHA A DICSIPLINA CUJO CADASTRO VOCÊ QUER ATUALIZAR**");
+    marcador_titulo(58);
+    Listar_Disciplinas(Lista_disciplinas, Lista_professores, num_disciplina, num_professor);
+    puts("\n");
+    int opcao;
+    scanf("%d", &opcao);
+    getchar();
+    if(opcao<=num_disciplina+1 && opcao>0){
+        opcao--;
+        puts("\n");
+        printf("NOME ATUAL DA DISCIPLINA: %s\n\n", Lista_disciplinas[opcao].nome);
+        puts("DIGITE O NOVO NOME (REPITA CASO JÁ ESTEJA CORRETO):");
+        recebe_string(Lista_disciplinas[opcao].nome, 100);
+        int op_prof;
+        do{
+            printf("PROFESSOR ATUAL: ");
+            for(int i=0; i<num_professor; i++){
+                if(Lista_disciplinas[opcao].professor==Lista_professores[i].matricula){
+                    printf("%s\n\n", Lista_professores[i].nome);
+                    break;
+                }
+            }
+            puts("ESCOLHA O NOVO PROFESSOR PARA ESSA DISCIPLINA:");
+            Listar_Professores(Lista_professores, num_professor);
+            scanf("%d", &op_prof);
+            getchar();
+            op_prof--;
+
+        }while(op_prof>num_professor+1 || op_prof<0);
+
+        Lista_disciplinas[num_disciplina].professor = Lista_professores[op_prof].matricula;
+        Lista_professores[op_prof].disciplinas[Lista_professores[op_prof].num_disciplinas]=Lista_disciplinas[num_disciplina].codigo;
+        puts("\n");
+
+        printf("SEMESTRE ATUAL DA DISCIPLINA: %d\n\n", Lista_disciplinas[opcao].semestre);
+        puts("DIGITE O NOVO SEMESTRE (REPITA CASO JÁ ESTEJA CORRETO):");
+        scanf("%d", &Lista_disciplinas[opcao].semestre);
+        getchar();
+    }
+    else{
+        marcador_titulo(21);
+        puts("**OPÇÃO NÃO ENCONTRADA**");
+        marcador_titulo(21);
+    }
+
+}
 
 int Deletar_Aluno(Pessoa Lista_alunos[], int num_aluno){
     Listar_Alunos(Lista_alunos, num_aluno);
@@ -682,6 +764,25 @@ int Deletar_Aluno(Pessoa Lista_alunos[], int num_aluno){
     }
 }
 int Deletar_Professor(Pessoa Lista_professores[], int num_professor){
+    Listar_Alunos(Lista_professores, num_professor);
+
+    int opcao;
+    do{
+        marcador_titulo(79);
+        puts("**DIGITE O NÚMERO REFERENTE AO ALUNO QUE VOCÊ QUER DELETAR OU 0 PARA CANCELAR**");
+        marcador_titulo(79);
+        scanf("%d", &opcao);
+        getchar();
+    }while(opcao > num_professor+1 || opcao < 0);
+    if(opcao==0) return DELETADO_ERRO;
+    else{
+        for(int i=opcao; i<num_professor; i++){
+            Lista_professores[i-1] = Lista_professores[i];
+        }
+        return DELETADO_SUCESSO;
+    }
+}
+int Deletar_Disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[],Pessoa Lista_alunos[], int num_disciplina, int num_professor, int num_aluno){
     Listar_Alunos(Lista_professores, num_professor);
 
     int opcao;
