@@ -356,7 +356,7 @@ int menu_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
                         puts("Matrícula não realizada.");
                     }
                     do{
-                    puts("Digite: \n\t1 para realizar outra matrícula ou \n\t0 para voltar ao menu de disciplinas.");
+                    puts("Digite: \n\t0 para realizar outra matrícula ou \n\t1 para voltar ao menu de disciplinas.");
                     scanf("%d", &sair_da_matricula);
                     getchar();
                     } while(sair_da_matricula != 0 && sair_da_matricula != 1);
@@ -440,6 +440,7 @@ void Listar_Disciplinas_Menu(Disciplina Lista_disciplinas[], Pessoa Lista_profes
         scanf("%d", &opcao);
         getchar();
         if(opcao<=num_disciplina+1 && opcao>0){
+            opcao--;
             printf("Código: %d \tNome: %s \tSemestre: %d \tProfessor: %s\n", Lista_disciplinas[opcao].codigo, Lista_disciplinas[opcao].nome, Lista_disciplinas[opcao].semestre, Lista_professores[j].nome);
             if(Lista_disciplinas[opcao].num_alunos>0) puts("Não há alunos cadastrados nessa disciplina.");
             else{
