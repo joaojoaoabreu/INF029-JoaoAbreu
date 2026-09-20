@@ -11,6 +11,7 @@
 #define DELETADO_ERRO -4
 #define MATRICULA_ERRO -5
 #define MATRICULA_SUCESSO -6
+#define ANO_ATUAL 2026
 
 typedef struct{
     int codigo;
@@ -25,6 +26,7 @@ typedef struct{
 typedef struct{
     int matricula;
     char nome[100];
+    int data_nas;
     int data_nascimento[3];
     long long cpf;
     int disciplinas[limite_disciplinas_por_aluno];
@@ -39,7 +41,7 @@ int menu_aluno(Pessoa Lista_alunos[], int num_aluno);
 int menu_professor(Pessoa Lista_professores[], int num_professor);
 int menu_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor, int num_aluno);
 void recebe_string(char *string, int tam);
-void recebe_data(int *dia, int *mes, int *ano);
+int recebe_data(int *dia, int *mes, int *ano);
 void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno);
 void Listar_Professores(Pessoa Lista_professores[], int num_professor);
 void Listar_Disciplinas_Menu(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor);
@@ -93,7 +95,7 @@ int main(){
     }
     return 0;
 }
-void recebe_data(int *dia, int *mes, int *ano){
+int recebe_data(int *dia, int *mes, int *ano){
     puts("\n");
     marcador_titulo(48);
     puts("*****DIGITE O DIA, MÊS E ANO DE NASCIMENTO:*****");
@@ -132,7 +134,12 @@ void recebe_data(int *dia, int *mes, int *ano){
             puts("*****DATA INVÁLIDA*****");
             marcador_titulo(23);
         }
-    }while((*dia>29 && *mes ==2)||(*dia>30 && *mes ==4)||(*dia>30 && *mes ==6)||(*dia>30 && *mes ==9)||(*dia>30 && *mes ==11));
+    }while(
+        (*dia>29 && *mes ==2)||
+        (*dia>30 && *mes ==4)||
+        (*dia>30 && *mes ==6)||
+        (*dia>30 && *mes ==9)||
+        (*dia>30 && *mes ==11));
     do{
         puts("\n");
         puts("ANO(FORMATO AAAA):");
@@ -144,7 +151,9 @@ void recebe_data(int *dia, int *mes, int *ano){
             puts("*****ANO INVÁLIDO*****");
             marcador_titulo(22);
         }
-    } while(*ano>2026 || *ano<1900);
+    } while(*ano>ANO_ATUAL || *ano<ANO_ATUAL-150);
+    int aaaammdd = *ano * 10000 + *mes * 100 + *dia;
+    return aaaammdd;
 }
 void recebe_string(char *string, int tamanho){
     fgets(string, tamanho, stdin);
@@ -386,6 +395,36 @@ int menu_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
         }
     }
     return num_disciplina;
+}
+void Listar_Alunos_data(Pessoa Lista_alunos[], int num_aluno){
+    Pessoa Alunos_por_data[num_aluno];
+    for(int i=0; i<num_aluno; i++){
+        Alunos_por_data[i]=Lista_alunos[i];
+    }
+    if(num_aluno==0){
+        marcador_titulo(25);
+        puts("*****LISTA VAZIA*****");
+        marcador_titulo(25);
+        puts("\n");
+    }
+    else{
+        marcador_titulo(53);
+        puts("*****LISTA DE ALUNOS POR DATA DE NASCIMENTO*****");
+        marcador_titulo(53);
+
+        for(int i=0; i<num_aluno; i++){
+            for(int j=1; j<num_aluno; j++){
+                if(Alunos_por_data[i].data_nas>Alunos_por_data[j].data_nas){
+                    Pessoa temp = Alunos_por_data[i];
+                    Alunos_por_data[i] = Alunos_por_data[j];
+                    Alunos_por_data[j] = temp;
+                }
+            }
+        }
+        for(int i=0; i<num_aluno; i++){
+            printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Alunos_por_data[i].matricula, Alunos_por_data[i].nome, Alunos_por_data[i].cpf, Alunos_por_data[i].genero, Alunos_por_data[i].data_nascimento[0], Alunos_por_data[i].data_nascimento[1], Alunos_por_data[i].data_nascimento[2]);
+        }
+    }
 }
 void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno){
     if(num_aluno==0){
@@ -667,7 +706,8 @@ int Cadastrar_aluno(Pessoa Lista_alunos[], int num_aluno){
 
         recebe_string(Lista_alunos[num_aluno].nome, 100);
 
-        recebe_data(&Lista_alunos[num_aluno].data_nascimento[0], &Lista_alunos[num_aluno].data_nascimento[1], &Lista_alunos[num_aluno].data_nascimento[2]);
+        Lista_alunos[num_aluno].data_nas = recebe_data(&Lista_alunos[num_aluno].data_nascimento[0], &Lista_alunos[num_aluno].data_nascimento[1], &Lista_alunos[num_aluno].data_nascimento[2]);
+
         puts("\n");
         puts("DIGITE O CPF:");
 
@@ -712,7 +752,7 @@ int Cadastrar_professor(Pessoa Lista_professores[], int num_professor){
 
         recebe_string(Lista_professores[num_professor].nome, 100);
 
-        recebe_data(&Lista_professores[num_professor].data_nascimento[0], &Lista_professores[num_professor].data_nascimento[1], &Lista_professores[num_professor].data_nascimento[2]);
+        Lista_professores[num_professor].data_nas = recebe_data(&Lista_professores[num_professor].data_nascimento[0], &Lista_professores[num_professor].data_nascimento[1], &Lista_professores[num_professor].data_nascimento[2]);
         puts("\n");
         puts("DIGITE O CPF:");
 
