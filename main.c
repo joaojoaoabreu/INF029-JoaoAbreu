@@ -429,18 +429,16 @@ int menu_relatorios(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
         puts("\t01 - Listar Alunos");
         puts("\t02 - Listar Professores");
         puts("\t03 - Listar Disciplinas");
-        puts("\t04 - Listar Alunos por sexo");
-        puts("\t05 - Listar Alunos por nome");
-        puts("\t06 - Listar Alunos por data de nascimento");
-        puts("\t07 - Listar Professores por sexo");
-        puts("\t08 - Listar Prodessores por nome");
-        puts("\t09 - Listar Professores por data de nascimento");
+        puts("\t04 - Listar Alunos por gênero");
+        puts("\t05 - Listar Alunos ordenados por nome");
+        puts("\t06 - Listar Alunos ordenados por data de nascimento");
+        puts("\t07 - Listar Professores por gênero");
+        puts("\t08 - Listar Prodessores ordenados por nome");
+        puts("\t09 - Listar Professores ordenados por data de nascimento");
         puts("\t10 - Aniversariantes do Mês");
-        puts("\t11 - Matricular Aluno em Disciplina");
-        puts("\t12 - Remover Aluno de Disciplina");
-        puts("\t13 - Buscar Pessoas por nome");
-        puts("\t14 - Listar Alunos por matriculados em menos de 3 disciplinas");
-        puts("\t15 - Listar Disciplinas como mais de 40 vagas");
+        puts("\t11 - Buscar Pessoas por nome");
+        puts("\t12 - Listar Alunos por matriculados em menos de 3 disciplinas");
+        puts("\t13 - Listar Disciplinas como mais de 40 vagas");
 
         int opcao;
         scanf("%d", &opcao);
@@ -463,43 +461,43 @@ int menu_relatorios(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
                 break;
             }
             case 3:{ //listar aluno por sexo
-
+                Listar_Disciplinas_Menu(Lista_disciplinas, Lista_professores, Lista_alunos, num_disciplina, num_professor);
                 puts("Aperte ENTER para voltar ao menu de relatórios");
                 getchar();
                 break;
             }
-            case 4:{ //listar aluno por nome
+            case 4:{ //listar aluno por sexo
+                Listar_Alunos_sexo(Lista_alunos, num_aluno);
+                puts("Aperte ENTER para voltar ao menu de relatórios");
+                getchar();
+                break;
+            }
+            case 5:{ //listar aluno por nome
                 Listar_Alunos_nome(Lista_alunos, num_aluno);
                 puts("Aperte ENTER para voltar ao menu de disciplina");
                 getchar();
                 break;
             }
-            case 5:{ //listar aluno por data de nascimento
+            case 6:{ //listar aluno por data de nascimento
                 Listar_Alunos_data(Lista_alunos, num_aluno);
                 puts("Aperte ENTER para voltar ao menu de relatórios");
                 getchar();
                 break;
             }
-            case 6:{ //listar professores por sexo
-
+            case 7:{ //listar professores por sexo
+                Listar_Professores_sexo(Lista_professores, num_professor);
                 puts("Aperte ENTER para voltar ao menu de relatórios");
                 getchar();
                 break;
             }
-            case 7:{ //listar professores por nome
+            case 8:{ //listar professores por nome
                 Listar_Professores_nome(Lista_professores, num_professor);
                 puts("Aperte ENTER para voltar ao menu de relatórios");
                 getchar();
                 break;
             }
-            case 8:{ //listar professores por data de nascimento
+            case 9:{ //listar professores por data de nascimento
                 Listar_Professores_data(Lista_professores, num_professor);
-                puts("Aperte ENTER para voltar ao menu de relatórios");
-                getchar();
-                break;
-            }
-            case 9:{ //Aniversariantes do mês
-
                 puts("Aperte ENTER para voltar ao menu de relatórios");
                 getchar();
                 break;
@@ -523,18 +521,6 @@ int menu_relatorios(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
                 break;
             }
             case 13:{ //Aniversariantes do mês
-
-                puts("Aperte ENTER para voltar ao menu de relatórios");
-                getchar();
-                break;
-            }
-            case 14:{ //Aniversariantes do mês
-
-                puts("Aperte ENTER para voltar ao menu de relatórios");
-                getchar();
-                break;
-            }
-            case 15:{ //Aniversariantes do mês
 
                 puts("Aperte ENTER para voltar ao menu de relatórios");
                 getchar();
@@ -608,9 +594,9 @@ void Listar_Alunos_nome(Pessoa Lista_alunos[], int num_aluno){
         puts("\n");
     }
     else{
-        marcador_titulo(39);
-        puts("*****LISTA DE ALUNOS POR NOME*****");
-        marcador_titulo(53);
+        marcador_titulo(41);
+        puts("*****ALUNOS EM ORDEM ALFABÉTICA*****");
+        marcador_titulo(41);
 
         for(int i=0; i<num_aluno; i++){
             for(int j=i+1; j<num_aluno; j++){
@@ -640,9 +626,9 @@ void Listar_Alunos_data(Pessoa Lista_alunos[], int num_aluno){
         puts("\n");
     }
     else{
-        marcador_titulo(53);
-        puts("*****LISTA DE ALUNOS POR DATA DE NASCIMENTO*****");
-        marcador_titulo(53);
+        marcador_titulo(52);
+        puts("***ALUNOS ORDENADOS POR NASCIMENTO***");
+        marcador_titulo(52);
 
         for(int i=0; i<num_aluno; i++){
             for(int j=i+1; j<num_aluno; j++){
@@ -738,9 +724,9 @@ void Listar_Professores_data(Pessoa Lista_professores[], int num_professor){
         puts("\n");
     }
     else{
-        marcador_titulo(54);
-        puts("***LISTA DE PROFESSORES POR DATA DE NASCIMENTO***");
-        marcador_titulo(54);
+        marcador_titulo(47);
+        puts("***PROFESSORES ORDENADOS POR NASCIMENTO***");
+        marcador_titulo(47);
 
         for(int i=0; i<num_professor; i++){
             for(int j=i+1; j<num_professor; j++){
@@ -768,9 +754,9 @@ void Listar_Professores_nome(Pessoa Lista_professores[], int num_professor){
         puts("\n");
     }
     else{
-        marcador_titulo(39);
-        puts("*****LISTA DE ALUNOS POR NOME*****");
-        marcador_titulo(53);
+        marcador_titulo(46);
+        puts("*****PROFESSORES EM ORDEM ALFABÉTICA*****");
+        marcador_titulo(46);
 
         for(int i=0; i<num_professor; i++){
             for(int j=i+1; j<num_professor; j++){
