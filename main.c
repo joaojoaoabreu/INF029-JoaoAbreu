@@ -12,7 +12,7 @@
 #define MATRICULA_ERRO -5
 #define MATRICULA_SUCESSO -6
 #define ANO_ATUAL 2026
-#define MES_ATUAL 7
+#define MES_ATUAL 9
 
 typedef struct{
     int codigo;
@@ -547,11 +547,11 @@ void Buscar_pessoas(Pessoa Lista_alunos[], Pessoa Lista_professores[], int num_a
         marcador_titulo(27);
         puts("*****BUSCAR PESSOAS*****");
         marcador_titulo(27);
-        char busca[3];
+        char busca[4];
         int encontrados = 0;
         while(volta==0){
             puts("\nDIGITE 3 LETRAS DO NOME QUE VOCÊ QUER BUSCAR:\n");
-            recebe_string(busca, 3);
+            recebe_string(busca, 4);
             for(int i=0; i<3; i++){
                 if(busca[i]>96 && busca[i]<123){
                     busca[i]-=32;
@@ -600,6 +600,7 @@ void Buscar_pessoas(Pessoa Lista_alunos[], Pessoa Lista_professores[], int num_a
 }
 void Listar_Alunos_sexo(Pessoa Lista_alunos[], int num_aluno){
     if(num_aluno==0){
+        puts("\n");
         marcador_titulo(25);
         puts("*****LISTA VAZIA*****");
         marcador_titulo(25);
@@ -611,8 +612,10 @@ void Listar_Alunos_sexo(Pessoa Lista_alunos[], int num_aluno){
 
             puts("\n");
             puts("ESCOLHA O GÊNERO (M - MASCULINO | F - FEMININO):");
+            puts("\n");
             scanf("%c", &escolha);
             getchar();
+            puts("\n");
 
             if(escolha == 'm' || escolha == 'f')
                 escolha -= 32;
@@ -621,21 +624,28 @@ void Listar_Alunos_sexo(Pessoa Lista_alunos[], int num_aluno){
         marcador_titulo(37);
         puts("***LISTA DE ALUNOS POR GENERO***");
         marcador_titulo(37);
+        int contagem=0;
         switch(escolha){
             case 'F':{
+                puts("\n");
                 printf("Feminino:\n");
+                puts("\n");
                 for(int i=0; i<num_aluno; i++){
                     if(Lista_alunos[i].genero=='F'){
-                        printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
+                        printf("\t%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", contagem+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
+                        contagem++;
                     }
                 }
                 break;
             }
             case 'M':{
-                printf("Feminino:\n");
+                puts("\n");
+                printf("Masculino:\n");
+                puts("\n");
                 for(int i=0; i<num_aluno; i++){
                     if(Lista_alunos[i].genero=='M'){
-                        printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
+                        printf("\t%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", contagem+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
+                        contagem++;
                     }
                 }
                 break;
@@ -659,9 +669,10 @@ void Listar_Alunos_nome(Pessoa Lista_alunos[], int num_aluno){
         puts("\n");
     }
     else{
-        marcador_titulo(41);
+        marcador_titulo(36);
         puts("*****ALUNOS EM ORDEM ALFABÉTICA*****");
-        marcador_titulo(41);
+        marcador_titulo(36);
+        puts("\n");
 
         for(int i=0; i<num_aluno; i++){
             for(int j=i+1; j<num_aluno; j++){
@@ -675,8 +686,9 @@ void Listar_Alunos_nome(Pessoa Lista_alunos[], int num_aluno){
             }
         }
         for(int i=0; i<num_aluno; i++){
-            printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Alunos_por_nome[i].matricula, Alunos_por_nome[i].nome, Alunos_por_nome[i].cpf, Alunos_por_nome[i].genero, Alunos_por_nome[i].data_nascimento[0], Alunos_por_nome[i].data_nascimento[1], Alunos_por_nome[i].data_nascimento[2]);
+            printf("\t%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Alunos_por_nome[i].matricula, Alunos_por_nome[i].nome, Alunos_por_nome[i].cpf, Alunos_por_nome[i].genero, Alunos_por_nome[i].data_nascimento[0], Alunos_por_nome[i].data_nascimento[1], Alunos_por_nome[i].data_nascimento[2]);
         }
+        puts("\n");
     }
 }
 void Listar_Alunos_data(Pessoa Lista_alunos[], int num_aluno){
@@ -691,9 +703,10 @@ void Listar_Alunos_data(Pessoa Lista_alunos[], int num_aluno){
         puts("\n");
     }
     else{
-        marcador_titulo(52);
+        marcador_titulo(37);
         puts("***ALUNOS ORDENADOS POR NASCIMENTO***");
-        marcador_titulo(52);
+        marcador_titulo(37);
+        puts("\n");
 
         for(int i=0; i<num_aluno; i++){
             for(int j=i+1; j<num_aluno; j++){
@@ -705,8 +718,9 @@ void Listar_Alunos_data(Pessoa Lista_alunos[], int num_aluno){
             }
         }
         for(int i=0; i<num_aluno; i++){
-            printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Alunos_por_data[i].matricula, Alunos_por_data[i].nome, Alunos_por_data[i].cpf, Alunos_por_data[i].genero, Alunos_por_data[i].data_nascimento[0], Alunos_por_data[i].data_nascimento[1], Alunos_por_data[i].data_nascimento[2]);
+            printf("\t%d - Matrícula:%d \tNome: %s \tCPF: %lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Alunos_por_data[i].matricula, Alunos_por_data[i].nome, Alunos_por_data[i].cpf, Alunos_por_data[i].genero, Alunos_por_data[i].data_nascimento[0], Alunos_por_data[i].data_nascimento[1], Alunos_por_data[i].data_nascimento[2]);
         }
+        puts("\n");
     }
 }
 void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno){
@@ -730,6 +744,7 @@ void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno){
 }
 void Listar_Professores_sexo(Pessoa Lista_professores[], int num_professor){
     if(num_professor==0){
+        puts("\n");
         marcador_titulo(25);
         puts("*****LISTA VAZIA*****");
         marcador_titulo(25);
@@ -741,31 +756,40 @@ void Listar_Professores_sexo(Pessoa Lista_professores[], int num_professor){
 
             puts("\n");
             puts("ESCOLHA O GÊNERO (M - MASCULINO | F - FEMININO):");
+            puts("\n");
             scanf("%c", &escolha);
             getchar();
-
+            puts("\n");
             if(escolha == 'm' || escolha == 'f')
                 escolha -= 32;
 
         } while(escolha != 'M' && escolha != 'F');
-        marcador_titulo(42);
+        int contagem=0;
+        marcador_titulo(32);
         puts("***LISTA DE PROFESSORES POR GENERO***");
-        marcador_titulo(42);
+        marcador_titulo(32);
+        puts("\n");
         switch(escolha){
             case 'F':{
+                puts("\n");
                 printf("Feminino:\n");
+                puts("\n");
                 for(int i=0; i<num_professor; i++){
                     if(Lista_professores[i].genero=='F'){
-                        printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
+                        printf("\t%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", contagem+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
+                        contagem++;
                     }
                 }
                 break;
             }
             case 'M':{
-                printf("Feminino:\n");
+                puts("\n");
+                printf("Masculino:\n");
+                puts("\n");
                 for(int i=0; i<num_professor; i++){
                     if(Lista_professores[i].genero=='M'){
-                        printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
+                        printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", contagem+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
+                        contagem++;
                     }
                 }
                 break;
@@ -789,9 +813,10 @@ void Listar_Professores_data(Pessoa Lista_professores[], int num_professor){
         puts("\n");
     }
     else{
-        marcador_titulo(47);
+        marcador_titulo(42);
         puts("***PROFESSORES ORDENADOS POR NASCIMENTO***");
-        marcador_titulo(47);
+        marcador_titulo(42);
+        puts("\n");
 
         for(int i=0; i<num_professor; i++){
             for(int j=i+1; j<num_professor; j++){
@@ -803,8 +828,9 @@ void Listar_Professores_data(Pessoa Lista_professores[], int num_professor){
             }
         }
         for(int i=0; i<num_professor; i++){
-            printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Professores_por_data[i].matricula, Professores_por_data[i].nome, Professores_por_data[i].cpf, Professores_por_data[i].genero, Professores_por_data[i].data_nascimento[0], Professores_por_data[i].data_nascimento[1], Professores_por_data[i].data_nascimento[2]);
+            printf("\t%d - Matrícula:%d \tNome: %s \tCPF: %lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Professores_por_data[i].matricula, Professores_por_data[i].nome, Professores_por_data[i].cpf, Professores_por_data[i].genero, Professores_por_data[i].data_nascimento[0], Professores_por_data[i].data_nascimento[1], Professores_por_data[i].data_nascimento[2]);
         }
+        puts("\n");
     }
 }
 void Listar_Professores_nome(Pessoa Lista_professores[], int num_professor){
@@ -819,9 +845,10 @@ void Listar_Professores_nome(Pessoa Lista_professores[], int num_professor){
         puts("\n");
     }
     else{
-        marcador_titulo(46);
+        marcador_titulo(41);
         puts("*****PROFESSORES EM ORDEM ALFABÉTICA*****");
-        marcador_titulo(46);
+        marcador_titulo(41);
+        puts("\n");
 
         for(int i=0; i<num_professor; i++){
             for(int j=i+1; j<num_professor; j++){
@@ -835,8 +862,9 @@ void Listar_Professores_nome(Pessoa Lista_professores[], int num_professor){
             }
         }
         for(int i=0; i<num_professor; i++){
-            printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Professores_por_nome[i].matricula, Professores_por_nome[i].nome, Professores_por_nome[i].cpf, Professores_por_nome[i].genero, Professores_por_nome[i].data_nascimento[0], Professores_por_nome[i].data_nascimento[1], Professores_por_nome[i].data_nascimento[2]);
+            printf("\t%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Professores_por_nome[i].matricula, Professores_por_nome[i].nome, Professores_por_nome[i].cpf, Professores_por_nome[i].genero, Professores_por_nome[i].data_nascimento[0], Professores_por_nome[i].data_nascimento[1], Professores_por_nome[i].data_nascimento[2]);
         }
+        puts("\n");
     }
 }
 void Listar_Professores(Pessoa Lista_professores[], int num_professor){
@@ -882,7 +910,7 @@ void Listar_Disciplinas_Menu(Disciplina Lista_disciplinas[], Pessoa Lista_profes
             }
         }
 
-        puts("ESCOLHA UMA DISCIPLINA PARA VER ALUNOS MATRICULADOS:");
+        puts("\n\nESCOLHA UMA DISCIPLINA PARA VER ALUNOS MATRICULADOS:");
 
         int opcao;
         scanf("%d", &opcao);
@@ -890,7 +918,7 @@ void Listar_Disciplinas_Menu(Disciplina Lista_disciplinas[], Pessoa Lista_profes
         if(opcao<=num_disciplina+1 && opcao>0){
             opcao--;
             printf("Código: %d \tNome: %s \tSemestre: %d \tProfessor: %s\n", Lista_disciplinas[opcao].codigo, Lista_disciplinas[opcao].nome, Lista_disciplinas[opcao].semestre, Lista_professores[j].nome);
-            if(Lista_disciplinas[opcao].num_alunos==0) puts("Não há alunos cadastrados nessa disciplina.");
+            if(Lista_disciplinas[opcao].num_alunos==0) puts("\nNão há alunos cadastrados nessa disciplina.");
             else{
                 puts("Alunos:");
                 for(int i=0;i<Lista_disciplinas[opcao].num_alunos;i++){
@@ -1144,7 +1172,7 @@ int Desmatricular_aluno(Disciplina Lista_disciplinas[], Pessoa Lista_professores
                 for(int i=0;i<Lista_disciplinas[opcao_d].num_alunos;i++){
                     for(int j=0; j<Lista_disciplinas[opcao_d].num_alunos; j++){
                         if(Lista_alunos[i].matricula == Lista_disciplinas[opcao_d].alunos[j]){
-                            printf("%d -\tNome: %s\tMatrícula: %d", j+1, Lista_alunos[i].nome, Lista_alunos[i].matricula);
+                            printf("\t%d -\tNome: %s\tMatrícula: %d\n", j+1, Lista_alunos[i].nome, Lista_alunos[i].matricula);
                             break;
                         }
                     }
@@ -1155,7 +1183,7 @@ int Desmatricular_aluno(Disciplina Lista_disciplinas[], Pessoa Lista_professores
 
                 opcao_a--;
                 getchar();
-                if(opcao_a>num_aluno && opcao_a<0) puts("Aluno inválido.\n\n");
+                if(opcao_a>num_aluno && opcao_a<0) puts("\nAluno inválido.\n\n");
 
             } while(opcao_a>num_aluno && opcao_a<0);
             for(int i=opcao_a; i<Lista_disciplinas[opcao_d].num_alunos; i++){
@@ -1166,7 +1194,7 @@ int Desmatricular_aluno(Disciplina Lista_disciplinas[], Pessoa Lista_professores
             }
             Lista_disciplinas[opcao_d].num_alunos--;
             Lista_alunos[opcao_a].num_disciplinas--;
-            printf("Aluno %s removido com sucesso da diciplina %s.\n\n", Lista_alunos[opcao_a].nome, Lista_disciplinas[opcao_d].nome);
+            printf("\nAluno %s removido com sucesso da diciplina %s.\n\n", Lista_alunos[opcao_a].nome, Lista_disciplinas[opcao_d].nome);
 
             return MATRICULA_SUCESSO;
         }
