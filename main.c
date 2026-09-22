@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <string.h>
-#define limite_alunos 3
-#define limite_professores 3
-#define limite_disciplinas 3
-#define limite_aluno_por_disciplina 30
+#define limite_alunos 5
+#define limite_professores 5
+#define limite_disciplinas 5
+#define limite_aluno_por_disciplina 45
 #define limite_disciplinas_por_aluno 10
 #define CADASTRO_SUCESSO -1
 #define CADASTRO_ERRO -2
@@ -53,6 +53,7 @@ void Listar_Professores_data(Pessoa Lista_professores[], int num_professor);
 void Listar_Professores_nome(Pessoa Lista_professores[], int num_professor);
 void Listar_Professores_sexo(Pessoa Lista_professores[], int num_professor);
 void Listar_Disciplinas_Menu(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor);
+void Aniversariante_mes(Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_aluno, int num_professor);
 int Cadastrar_aluno(Pessoa Lista_alunos[], int num_aluno);
 int Cadastrar_professor(Pessoa Lista_professores[], int num_professor);
 int Cadastrar_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], int num_disciplina, int num_professor);
@@ -503,12 +504,12 @@ int menu_relatorios(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
                 break;
             }
             case 10:{ //Aniversariantes do mês
-
+                Aniversariante_mes(Lista_professores, Lista_alunos, num_aluno, num_professor);
                 puts("Aperte ENTER para voltar ao menu de relatórios");
                 getchar();
                 break;
             }
-            case 11:{ //Aniversariantes do mês
+            case 11:{ //Buscar Pessoas por nome
 
                 puts("Aperte ENTER para voltar ao menu de relatórios");
                 getchar();
@@ -842,6 +843,97 @@ void Listar_Disciplinas_Menu(Disciplina Lista_disciplinas[], Pessoa Lista_profes
     }
     puts("\n");
 }
+void Aniversariante_mes(Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_aluno, int num_professor){
+    if(num_professor==0 && num_aluno==0){
+        marcador_titulo(25);
+        puts("*****LISTA VAZIA*****");
+        marcador_titulo(25);
+        puts("\n");
+    }
+    else{
+        switch(MES_ATUAL){
+            case 1:{
+                printf("MÊS ATUAL: JANEIRO");
+                break;
+            }
+            case 2:{
+                printf("MÊS ATUAL: FEVEREIRO");
+                break;
+            }
+            case 3:{
+                printf("MÊS ATUAL: MARÇO");
+                break;
+            }
+            case 4:{
+                printf("MÊS ATUAL: ABRIL");
+                break;
+            }
+            case 5:{
+                printf("MÊS ATUAL: MAIO");
+                break;
+            }
+            case 6:{
+                printf("MÊS ATUAL: JUNHO");
+                break;
+            }
+            case 7:{
+                printf("MÊS ATUAL: JULHO");
+                break;
+            }
+            case 8:{
+                printf("MÊS ATUAL: AGOSTO");
+                break;
+            }
+            case 9:{
+                printf("MÊS ATUAL: SETEMBRO");
+                break;
+            }
+            case 10:{
+                printf("MÊS ATUAL: OUTUBRO");
+                break;
+            }
+            case 11:{
+                printf("MÊS ATUAL: NOVEMBRO");
+                break;
+            }
+            case 12:{
+                printf("MÊS ATUAL: DEZEMBRO");
+                break;
+            }
+        }
+        int j;
+        puts("\n");
+        marcador_titulo(28);
+        puts("***ANIVERSARIANTES DO MÊS***");
+        marcador_titulo(28);
+        int aniversariantes = 0;
+        for(int i=0; i<num_aluno; i++){
+            if(Lista_alunos[i].data_nascimento[1]==MES_ATUAL){
+                printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", aniversariantes+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
+                aniversariantes++;
+            }
+        }
+        for(int i=0; i<num_professor; i++){
+            if(Lista_professores[i].data_nascimento[1]==MES_ATUAL){
+                printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", aniversariantes+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
+                aniversariantes++;
+            }
+        }
+        printf("\n");
+        if(aniversariantes==0){
+            printf("Não há aniversariantes esse mês.\n");
+        }
+        else{
+            if(aniversariantes>1){
+                printf("Total = %d aniversariantes\n", aniversariantes);
+            }
+            if(aniversariantes==1){
+                printf("Total = 1 aniversariante\n");
+            }
+        }
+    }
+    puts("\n");
+}
 void Listar_Disciplinas(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], int num_disciplina, int num_professor){
     if(num_disciplina==0){
         puts("LISTA VAZIA");
@@ -864,7 +956,6 @@ void Listar_Disciplinas(Disciplina Lista_disciplinas[], Pessoa Lista_professores
     }
     puts("\n");
 }
-
 int Matricular_aluno(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_professor, int num_disciplina, int num_aluno){
     if(num_disciplina==0){
         puts("NÃO HÁ DISCIPLINAS CADASTRADAS.");
@@ -1295,7 +1386,6 @@ void Alterar_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores
     }
 
 }
-
 int Deletar_Aluno(Pessoa Lista_alunos[], int num_aluno){
     Listar_Alunos(Lista_alunos, num_aluno);
 
@@ -1316,13 +1406,13 @@ int Deletar_Aluno(Pessoa Lista_alunos[], int num_aluno){
     }
 }
 int Deletar_Professor(Pessoa Lista_professores[], int num_professor){
-    Listar_Alunos(Lista_professores, num_professor);
+    Listar_Professores(Lista_professores, num_professor);
 
     int opcao;
     do{
-        marcador_titulo(79);
-        puts("**DIGITE O NÚMERO REFERENTE AO ALUNO QUE VOCÊ QUER DELETAR OU 0 PARA CANCELAR**");
-        marcador_titulo(79);
+        marcador_titulo(83);
+        puts("**DIGITE O NÚMERO REFERENTE AO PROFESSOR QUE VOCÊ QUER DELETAR OU 0 PARA CANCELAR**");
+        marcador_titulo(83);
         scanf("%d", &opcao);
         getchar();
     }while(opcao > num_professor+1 || opcao < 0);
@@ -1335,13 +1425,12 @@ int Deletar_Professor(Pessoa Lista_professores[], int num_professor){
     }
 }
 int Deletar_Disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[],Pessoa Lista_alunos[], int num_disciplina, int num_professor, int num_aluno){
-    Listar_Alunos(Lista_professores, num_professor);
     //Finzalizar essa função
     int opcao;
     do{
-        marcador_titulo(79);
-        puts("**DIGITE O NÚMERO REFERENTE AO ALUNO QUE VOCÊ QUER DELETAR OU 0 PARA CANCELAR**");
-        marcador_titulo(79);
+        marcador_titulo(83);
+        puts("**ESCOLHA A OPÇÃO REFERENTE À DISCIPLINA QUE VOCÊ QUER DELETAR OU 0 PARA CANCELAR**");
+        marcador_titulo(83);
         scanf("%d", &opcao);
         getchar();
     }while(opcao > num_professor+1 || opcao < 0);
