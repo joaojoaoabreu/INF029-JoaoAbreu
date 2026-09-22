@@ -44,6 +44,7 @@ int menu_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
 int menu_relatorios(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor, int num_aluno);
 void recebe_string(char *string, int tam);
 int recebe_data(int *dia, int *mes, int *ano);
+void Buscar_pessoas(Pessoa Lista_alunos[], Pessoa Lista_professores[], int num_aluno, int num_professor);
 void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno);
 void Listar_Alunos_data(Pessoa Lista_alunos[], int num_aluno);
 void Listar_Alunos_nome(Pessoa Lista_alunos[], int num_aluno);
@@ -510,7 +511,7 @@ int menu_relatorios(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
                 break;
             }
             case 11:{ //Buscar Pessoas por nome
-
+                Buscar_pessoas(Lista_alunos, Lista_professores, num_aluno, num_professor);
                 puts("Aperte ENTER para voltar ao menu de relatórios");
                 getchar();
                 break;
@@ -533,6 +534,69 @@ int menu_relatorios(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
         }
     }
     return num_disciplina;
+}
+void Buscar_pessoas(Pessoa Lista_alunos[], Pessoa Lista_professores[], int num_aluno, int num_professor){
+    if(num_aluno==0 && num_professor==0){
+        marcador_titulo(25);
+        puts("*****LISTA VAZIA*****");
+        marcador_titulo(25);
+        puts("\n");
+    }
+    else{
+        int volta=0;
+        marcador_titulo(27);
+        puts("*****BUSCAR PESSOAS*****");
+        marcador_titulo(27);
+        char busca[3];
+        int encontrados = 0;
+        while(volta==0){
+            puts("\nDIGITE 3 LETRAS DO NOME QUE VOCÊ QUER BUSCAR:\n");
+            recebe_string(busca, 3);
+            for(int i=0; i<3; i++){
+                if(busca[i]>96 && busca[i]<123){
+                    busca[i]-=32;
+                }
+            }
+            puts("Alunos:\n");
+            for(int i=0; i<num_aluno; i++){
+                for(int j=0; Lista_alunos[i].nome[j]!='\0'; j++){
+                    if(busca[0]==Lista_alunos[i].nome[j] || (busca[0]+32)==Lista_alunos[i].nome[j]){
+                        if(busca[1]==Lista_alunos[i].nome[j+1] || (busca[1]+32)==Lista_alunos[i].nome[j+1]){
+                            if(busca[2]==Lista_alunos[i].nome[j+2] || (busca[2]+32)==Lista_alunos[i].nome[j+2]){
+                                printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", encontrados+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
+                                encontrados++;
+                            }
+                        }
+                    }
+                }
+            }
+            if(encontrados==0){
+                puts("\tNenhum aluno encontrado.\n\n");
+            }
+            puts("Professores:\n");
+            for(int i=0; i<num_professor; i++){
+                for(int j=0; Lista_professores[i].nome[j]!='\0'; j++){
+                    if(busca[0]==Lista_professores[i].nome[j] || busca[0]+32==Lista_professores[i].nome[j]){
+                        if(busca[1]==Lista_professores[i].nome[j+1] || busca[1]+32==Lista_professores[i].nome[j+1]){
+                            if(busca[2]==Lista_professores[i].nome[j+2] || busca[2]+32==Lista_professores[i].nome[j+2]){
+                                printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", encontrados+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
+                                encontrados++;
+                            }
+                        }
+                    }
+                }
+            }
+            if(encontrados==0){
+                puts("\tNenhum professor encontrado.\n\n");
+            }
+            do{
+            puts("\nDIGITE 0 PARA BUSCAR NOVAMENTE OU 1 PARA SAIR.\n");
+            scanf("%d", &volta);
+            getchar();
+            }while(volta<0 || volta>1);
+        }
+        puts("\n");
+    }
 }
 void Listar_Alunos_sexo(Pessoa Lista_alunos[], int num_aluno){
     if(num_aluno==0){
