@@ -1152,7 +1152,7 @@ int Matricular_aluno(Disciplina Lista_disciplinas[], Pessoa Lista_professores[],
                 opcao_a--;
                 if(opcao_a>num_aluno && opcao_a<0) puts("Aluno inválido.\n\n");
                 else{
-                    for(int i; i<num_aluno; i++){
+                    for(int i=0; i<Lista_disciplinas[opcao_d].num_alunos; i++){
                         if(Lista_alunos[opcao_a].matricula==Lista_disciplinas[opcao_d].alunos[i]){
                             puts("Aluno já matriculado nessa disciplina, escolha outro aluno ou 0 para sair.");
                             opcao_a=-1;
