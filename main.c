@@ -45,6 +45,7 @@ int menu_relatorios(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
 void recebe_string(char *string, int tam);
 int recebe_data(int *dia, int *mes, int *ano);
 void Buscar_pessoas(Pessoa Lista_alunos[], Pessoa Lista_professores[], int num_aluno, int num_professor);
+void Alunos_menos_de_tres(Pessoa Lista_alunos[], int num_aluno);
 void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno);
 void Listar_Alunos_data(Pessoa Lista_alunos[], int num_aluno);
 void Listar_Alunos_nome(Pessoa Lista_alunos[], int num_aluno);
@@ -54,6 +55,7 @@ void Listar_Professores_data(Pessoa Lista_professores[], int num_professor);
 void Listar_Professores_nome(Pessoa Lista_professores[], int num_professor);
 void Listar_Professores_sexo(Pessoa Lista_professores[], int num_professor);
 void Listar_Disciplinas_Menu(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor);
+void Listar_Disciplinas_mais_quarenta(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], int num_disciplina, int num_professor);
 void Aniversariante_mes(Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_aluno, int num_professor);
 int Cadastrar_aluno(Pessoa Lista_alunos[], int num_aluno);
 int Cadastrar_professor(Pessoa Lista_professores[], int num_professor);
@@ -439,7 +441,7 @@ int menu_relatorios(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
         puts("\t09 - Listar Professores ordenados por data de nascimento");
         puts("\t10 - Aniversariantes do Mês");
         puts("\t11 - Buscar Pessoas por nome");
-        puts("\t12 - Listar Alunos por matriculados em menos de 3 disciplinas");
+        puts("\t12 - Listar Alunos matriculados em menos de 3 disciplinas");
         puts("\t13 - Listar Disciplinas como mais de 40 vagas");
 
         int opcao;
@@ -516,14 +518,14 @@ int menu_relatorios(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
                 getchar();
                 break;
             }
-            case 12:{ //Aniversariantes do mês
-
+            case 12:{ //Listar Alunos matriculados em menos de 3 disciplinas
+                Alunos_menos_de_tres(Lista_alunos, num_aluno);
                 puts("Aperte ENTER para voltar ao menu de relatórios");
                 getchar();
                 break;
             }
-            case 13:{ //Aniversariantes do mês
-
+            case 13:{ //Listar Disciplinas como mais de 40 vagas
+                Listar_Disciplinas_mais_quarenta(Lista_disciplinas, Lista_professores, num_disciplina, num_professor);
                 puts("Aperte ENTER para voltar ao menu de relatórios");
                 getchar();
                 break;
@@ -738,6 +740,32 @@ void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno){
         puts("\n");
         for(int i=0; i<num_aluno; i++){
             printf("%d - Matrícula:%d \tNome: %s \tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c\n", i+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero);
+        }
+    }
+    puts("\n");
+}
+void Alunos_menos_de_tres(Pessoa Lista_alunos[], int num_aluno){
+    if(num_aluno==0){
+        marcador_titulo(25);
+        puts("*****LISTA VAZIA*****");
+        marcador_titulo(25);
+        puts("\n");
+    }
+    else{
+        puts("\n");
+        marcador_titulo(51);
+        puts("***ALUNOS MATRICULADOS EM MENOS DE 3 DISCIPLINAS***");
+        marcador_titulo(51);
+        puts("\n");
+        int contador=0;
+        for(int i=0; i<num_aluno; i++){
+            if(Lista_alunos[i].num_disciplinas<3){
+                printf("%d - Matrícula:%d \tNome: %s \tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c\n", contador+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero);
+                contador++;
+            }
+        }
+        if(contador==0){
+            puts("Nenhum aluno matriculado em menos de 3 disciplinas");
         }
     }
     puts("\n");
@@ -1048,6 +1076,30 @@ void Listar_Disciplinas(Disciplina Lista_disciplinas[], Pessoa Lista_professores
     }
     puts("\n");
 }
+void Listar_Disciplinas_mais_quarenta(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], int num_disciplina, int num_professor){
+    if(num_disciplina==0){
+        puts("LISTA VAZIA");
+        puts("\n");
+    }
+    else{
+        int j;
+        puts("\n");
+        puts("LISTA DE DISCIPLINAS COM MAIS DE 40 VAGAS:");
+        puts("\n");
+        for(int i=0; i<num_disciplina; i++){
+            if(limite_aluno_por_disciplina - Lista_disciplinas[i].num_alunos > 40){
+                printf("%d - Código: %d \tNome: %s \tSemestre: %d", i+1, Lista_disciplinas[i].codigo, Lista_disciplinas[i].nome, Lista_disciplinas[i].semestre);
+                for(j=0; j<num_professor; j++){
+                    if(Lista_professores[j].matricula == Lista_disciplinas[i].professor){
+                        printf("\tProfessor: %s\n", Lista_professores[j].nome);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    puts("\n");
+}
 int Matricular_aluno(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_professor, int num_disciplina, int num_aluno){
     if(num_disciplina==0){
         puts("NÃO HÁ DISCIPLINAS CADASTRADAS.");
@@ -1094,11 +1146,10 @@ int Matricular_aluno(Disciplina Lista_disciplinas[], Pessoa Lista_professores[],
                 puts("\n");
                 Listar_Alunos(Lista_alunos, num_aluno);
                 scanf("%d", &opcao_a);
-
+                getchar();
                 if(opcao_a==0) return MATRICULA_ERRO;
 
                 opcao_a--;
-                getchar();
                 if(opcao_a>num_aluno && opcao_a<0) puts("Aluno inválido.\n\n");
                 else{
                     for(int i; i<num_aluno; i++){
