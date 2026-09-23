@@ -498,7 +498,7 @@ int menu_relatorios(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
         puts("\t05 - Listar Alunos ordenados por nome");
         puts("\t06 - Listar Alunos ordenados por data de nascimento");
         puts("\t07 - Listar Professores por gênero");
-        puts("\t08 - Listar Prodessores ordenados por nome");
+        puts("\t08 - Listar Professores ordenados por nome");
         puts("\t09 - Listar Professores ordenados por data de nascimento");
         puts("\t10 - Aniversariantes do Mês");
         puts("\t11 - Buscar Pessoas por nome");
