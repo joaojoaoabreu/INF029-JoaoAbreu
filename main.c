@@ -11,6 +11,9 @@
 #define DELETADO_ERRO -4
 #define MATRICULA_ERRO -5
 #define MATRICULA_SUCESSO -6
+#define CPF_VALIDO -7
+#define CPF_INVALIDO -8
+
 #define ANO_ATUAL 2026
 #define MES_ATUAL 9
 
@@ -44,6 +47,7 @@ int menu_disciplina(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], 
 int menu_relatorios(Disciplina Lista_disciplinas[], Pessoa Lista_professores[], Pessoa Lista_alunos[], int num_disciplina, int num_professor, int num_aluno);
 void recebe_string(char *string, int tam);
 int recebe_data(int *dia, int *mes, int *ano);
+int validar_cpf(long long cpf);
 void Buscar_pessoas(Pessoa Lista_alunos[], Pessoa Lista_professores[], int num_aluno, int num_professor);
 void Alunos_menos_de_tres(Pessoa Lista_alunos[], int num_aluno);
 void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno);
@@ -174,6 +178,63 @@ int recebe_data(int *dia, int *mes, int *ano){
 void recebe_string(char *string, int tamanho){
     fgets(string, tamanho, stdin);
     string[strcspn(string, "\n")] = '\0';
+}
+int validar_cpf(long long cpf){
+    if(cpf>99999999999){
+        printf("CPF inválido");
+        return CPF_INVALIDO;
+    }
+    int num[11];
+    int temp=0;
+    for(int i=10; i>=0; i--){
+        num[i]=cpf%10;
+        cpf/=10;
+    }
+    for(int j=0; j<10; j++){
+        if(num[j]==num[j+1]){
+            temp++;
+        }
+    }
+    if(temp==10){
+        printf("CPF inválido");
+        return CPF_INVALIDO;
+    }
+    else{
+
+        int s1=(num[0]*10)+(num[1]*9)+(num[2]*8)+(num[3]*7)+(num[4]*6)+(num[5]*5)+(num[6]*4)+(num[7]*3)+(num[8]*2);
+        int s2=(num[0]*11)+(num[1]*10)+(num[2]*9)+(num[3]*8)+(num[4]*7)+(num[5]*6)+(num[6]*5)+(num[7]*4)+(num[8]*3)+(num[9]*2);
+        int resto1=s1%11;
+        int resto2=s2%11;
+
+        if(resto1<2 && num[9]==0){
+            if(resto2<2 && num[10]==0){
+                return CPF_VALIDO;
+            }
+            else if(num[10]==(11-resto2)){
+                return CPF_VALIDO;
+            }
+            else{
+                printf("CPF inválido");
+                return CPF_INVALIDO;
+            }
+        }
+        else if(num[9]==(11-resto1)){
+            if(resto2<2 && num[10]==0){
+                return CPF_VALIDO;
+            }
+            else if(num[10]==(11-resto2)){
+                return CPF_VALIDO;
+            }
+            else{
+                printf("CPF inválido");
+                return CPF_INVALIDO;
+            }
+        }
+        else{
+            printf("CPF inválido");
+            return CPF_INVALIDO;
+        }
+    }
 }
 int menu(){
 
@@ -565,7 +626,7 @@ void Buscar_pessoas(Pessoa Lista_alunos[], Pessoa Lista_professores[], int num_a
                     if(busca[0]==Lista_alunos[i].nome[j] || (busca[0]+32)==Lista_alunos[i].nome[j]){
                         if(busca[1]==Lista_alunos[i].nome[j+1] || (busca[1]+32)==Lista_alunos[i].nome[j+1]){
                             if(busca[2]==Lista_alunos[i].nome[j+2] || (busca[2]+32)==Lista_alunos[i].nome[j+2]){
-                                printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", encontrados+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
+                                printf("%d - Matrícula:%d \tNome: %s \tCPF: %011lld \tGênero:%c \tNascimento: %d/%d/%d\n", encontrados+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
                                 encontrados++;
                             }
                         }
@@ -581,7 +642,7 @@ void Buscar_pessoas(Pessoa Lista_alunos[], Pessoa Lista_professores[], int num_a
                     if(busca[0]==Lista_professores[i].nome[j] || busca[0]+32==Lista_professores[i].nome[j]){
                         if(busca[1]==Lista_professores[i].nome[j+1] || busca[1]+32==Lista_professores[i].nome[j+1]){
                             if(busca[2]==Lista_professores[i].nome[j+2] || busca[2]+32==Lista_professores[i].nome[j+2]){
-                                printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", encontrados+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
+                                printf("%d - Matrícula:%d \tNome: %s \tCPF: %011lld \tGênero:%c \tNascimento: %d/%d/%d\n", encontrados+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
                                 encontrados++;
                             }
                         }
@@ -634,7 +695,7 @@ void Listar_Alunos_sexo(Pessoa Lista_alunos[], int num_aluno){
                 puts("\n");
                 for(int i=0; i<num_aluno; i++){
                     if(Lista_alunos[i].genero=='F'){
-                        printf("\t%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", contagem+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
+                        printf("\t%d - Matrícula:%d \tNome: %s \tCPF: %011lld \tGênero:%c \tNascimento: %d/%d/%d\n", contagem+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
                         contagem++;
                     }
                 }
@@ -646,7 +707,7 @@ void Listar_Alunos_sexo(Pessoa Lista_alunos[], int num_aluno){
                 puts("\n");
                 for(int i=0; i<num_aluno; i++){
                     if(Lista_alunos[i].genero=='M'){
-                        printf("\t%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", contagem+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
+                        printf("\t%d - Matrícula:%d \tNome: %s \tCPF: %011lld \tGênero:%c \tNascimento: %d/%d/%d\n", contagem+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
                         contagem++;
                     }
                 }
@@ -688,7 +749,7 @@ void Listar_Alunos_nome(Pessoa Lista_alunos[], int num_aluno){
             }
         }
         for(int i=0; i<num_aluno; i++){
-            printf("\t%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Alunos_por_nome[i].matricula, Alunos_por_nome[i].nome, Alunos_por_nome[i].cpf, Alunos_por_nome[i].genero, Alunos_por_nome[i].data_nascimento[0], Alunos_por_nome[i].data_nascimento[1], Alunos_por_nome[i].data_nascimento[2]);
+            printf("\t%d - Matrícula:%d \tNome: %s \tCPF: %011lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Alunos_por_nome[i].matricula, Alunos_por_nome[i].nome, Alunos_por_nome[i].cpf, Alunos_por_nome[i].genero, Alunos_por_nome[i].data_nascimento[0], Alunos_por_nome[i].data_nascimento[1], Alunos_por_nome[i].data_nascimento[2]);
         }
         puts("\n");
     }
@@ -720,7 +781,7 @@ void Listar_Alunos_data(Pessoa Lista_alunos[], int num_aluno){
             }
         }
         for(int i=0; i<num_aluno; i++){
-            printf("\t%d - Matrícula:%d \tNome: %s \tCPF: %lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Alunos_por_data[i].matricula, Alunos_por_data[i].nome, Alunos_por_data[i].cpf, Alunos_por_data[i].genero, Alunos_por_data[i].data_nascimento[0], Alunos_por_data[i].data_nascimento[1], Alunos_por_data[i].data_nascimento[2]);
+            printf("\t%d - Matrícula:%d \tNome: %s \tCPF: %011lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Alunos_por_data[i].matricula, Alunos_por_data[i].nome, Alunos_por_data[i].cpf, Alunos_por_data[i].genero, Alunos_por_data[i].data_nascimento[0], Alunos_por_data[i].data_nascimento[1], Alunos_por_data[i].data_nascimento[2]);
         }
         puts("\n");
     }
@@ -739,7 +800,7 @@ void Listar_Alunos(Pessoa Lista_alunos[], int num_aluno){
         marcador_titulo(25);
         puts("\n");
         for(int i=0; i<num_aluno; i++){
-            printf("%d - Matrícula:%d \tNome: %s \tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c\n", i+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero);
+            printf("%d - Matrícula:%d \tNome: %s \tNascimento: %d/%d/%d \tCPF: %011lld \tGênero:%c\n", i+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero);
         }
     }
     puts("\n");
@@ -760,7 +821,7 @@ void Alunos_menos_de_tres(Pessoa Lista_alunos[], int num_aluno){
         int contador=0;
         for(int i=0; i<num_aluno; i++){
             if(Lista_alunos[i].num_disciplinas<3){
-                printf("%d - Matrícula:%d \tNome: %s \tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c\n", contador+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero);
+                printf("%d - Matrícula:%d \tNome: %s \tNascimento: %d/%d/%d \tCPF: %011lld \tGênero:%c\n", contador+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2], Lista_alunos[i].cpf, Lista_alunos[i].genero);
                 contador++;
             }
         }
@@ -804,7 +865,7 @@ void Listar_Professores_sexo(Pessoa Lista_professores[], int num_professor){
                 puts("\n");
                 for(int i=0; i<num_professor; i++){
                     if(Lista_professores[i].genero=='F'){
-                        printf("\t%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", contagem+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
+                        printf("\t%d - Matrícula:%d \tNome: %s \tCPF: %011lld \tGênero:%c \tNascimento: %d/%d/%d\n", contagem+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
                         contagem++;
                     }
                 }
@@ -816,7 +877,7 @@ void Listar_Professores_sexo(Pessoa Lista_professores[], int num_professor){
                 puts("\n");
                 for(int i=0; i<num_professor; i++){
                     if(Lista_professores[i].genero=='M'){
-                        printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", contagem+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
+                        printf("%d - Matrícula:%d \tNome: %s \tCPF: %011lld \tGênero:%c \tNascimento: %d/%d/%d\n", contagem+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
                         contagem++;
                     }
                 }
@@ -856,7 +917,7 @@ void Listar_Professores_data(Pessoa Lista_professores[], int num_professor){
             }
         }
         for(int i=0; i<num_professor; i++){
-            printf("\t%d - Matrícula:%d \tNome: %s \tCPF: %lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Professores_por_data[i].matricula, Professores_por_data[i].nome, Professores_por_data[i].cpf, Professores_por_data[i].genero, Professores_por_data[i].data_nascimento[0], Professores_por_data[i].data_nascimento[1], Professores_por_data[i].data_nascimento[2]);
+            printf("\t%d - Matrícula:%d \tNome: %s \tCPF: %011lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Professores_por_data[i].matricula, Professores_por_data[i].nome, Professores_por_data[i].cpf, Professores_por_data[i].genero, Professores_por_data[i].data_nascimento[0], Professores_por_data[i].data_nascimento[1], Professores_por_data[i].data_nascimento[2]);
         }
         puts("\n");
     }
@@ -890,7 +951,7 @@ void Listar_Professores_nome(Pessoa Lista_professores[], int num_professor){
             }
         }
         for(int i=0; i<num_professor; i++){
-            printf("\t%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Professores_por_nome[i].matricula, Professores_por_nome[i].nome, Professores_por_nome[i].cpf, Professores_por_nome[i].genero, Professores_por_nome[i].data_nascimento[0], Professores_por_nome[i].data_nascimento[1], Professores_por_nome[i].data_nascimento[2]);
+            printf("\t%d - Matrícula:%d \tNome: %s \tCPF: %011lld \tGênero:%c \tNascimento: %d/%d/%d\n", i+1, Professores_por_nome[i].matricula, Professores_por_nome[i].nome, Professores_por_nome[i].cpf, Professores_por_nome[i].genero, Professores_por_nome[i].data_nascimento[0], Professores_por_nome[i].data_nascimento[1], Professores_por_nome[i].data_nascimento[2]);
         }
         puts("\n");
     }
@@ -909,7 +970,7 @@ void Listar_Professores(Pessoa Lista_professores[], int num_professor){
         marcador_titulo(26);
         puts("\n");
         for(int i=0; i<num_professor; i++){
-            printf("%d - Matrícula:%d \tNome: %s \tNascimento: %d/%d/%d \tCPF:%lld \tGênero:%c\n", i+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2], Lista_professores[i].cpf, Lista_professores[i].genero);
+            printf("%d - Matrícula:%d \tNome: %s \tNascimento: %d/%d/%d \tCPF: %011lld \tGênero:%c\n", i+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2], Lista_professores[i].cpf, Lista_professores[i].genero);
         }
     }
     puts("\n");
@@ -1029,13 +1090,13 @@ void Aniversariante_mes(Pessoa Lista_professores[], Pessoa Lista_alunos[], int n
         int aniversariantes = 0;
         for(int i=0; i<num_aluno; i++){
             if(Lista_alunos[i].data_nascimento[1]==MES_ATUAL){
-                printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", aniversariantes+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
+                printf("%d - Matrícula:%d \tNome: %s \tCPF: %011lld \tGênero:%c \tNascimento: %d/%d/%d\n", aniversariantes+1, Lista_alunos[i].matricula, Lista_alunos[i].nome, Lista_alunos[i].cpf, Lista_alunos[i].genero, Lista_alunos[i].data_nascimento[0], Lista_alunos[i].data_nascimento[1], Lista_alunos[i].data_nascimento[2]);
                 aniversariantes++;
             }
         }
         for(int i=0; i<num_professor; i++){
             if(Lista_professores[i].data_nascimento[1]==MES_ATUAL){
-                printf("%d - Matrícula:%d \tNome: %s \tCPF:%lld \tGênero:%c \tNascimento: %d/%d/%d\n", aniversariantes+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
+                printf("%d - Matrícula:%d \tNome: %s \tCPF: %011lld \tGênero:%c \tNascimento: %d/%d/%d\n", aniversariantes+1, Lista_professores[i].matricula, Lista_professores[i].nome, Lista_professores[i].cpf, Lista_professores[i].genero, Lista_professores[i].data_nascimento[0], Lista_professores[i].data_nascimento[1], Lista_professores[i].data_nascimento[2]);
                 aniversariantes++;
             }
         }
@@ -1273,11 +1334,15 @@ int Cadastrar_aluno(Pessoa Lista_alunos[], int num_aluno){
 
         Lista_alunos[num_aluno].data_nas = recebe_data(&Lista_alunos[num_aluno].data_nascimento[0], &Lista_alunos[num_aluno].data_nascimento[1], &Lista_alunos[num_aluno].data_nascimento[2]);
 
-        puts("\n");
-        puts("DIGITE O CPF:");
 
-        scanf("%lld",&Lista_alunos[num_aluno].cpf);
-        getchar();
+        do{
+
+            puts("\n");
+            puts("DIGITE O CPF:");
+            scanf("%lld",&Lista_alunos[num_aluno].cpf);
+            getchar();
+        } while(validar_cpf(Lista_alunos[num_aluno].cpf)==CPF_INVALIDO);
+
         do{
             puts("\n");
             puts("DIGITE O GÊNERO (M - MASCULINO | F - FEMININO):");
@@ -1318,11 +1383,15 @@ int Cadastrar_professor(Pessoa Lista_professores[], int num_professor){
         recebe_string(Lista_professores[num_professor].nome, 100);
 
         Lista_professores[num_professor].data_nas = recebe_data(&Lista_professores[num_professor].data_nascimento[0], &Lista_professores[num_professor].data_nascimento[1], &Lista_professores[num_professor].data_nascimento[2]);
-        puts("\n");
-        puts("DIGITE O CPF:");
 
-        scanf("%lld",&Lista_professores[num_professor].cpf);
-        getchar();
+        do{
+
+            puts("\n");
+            puts("DIGITE O CPF:");
+            scanf("%lld",&Lista_professores[num_professor].cpf);
+            getchar();
+        } while(validar_cpf(Lista_professores[num_professor].cpf)==CPF_INVALIDO);
+
         do{
             puts("\n");
             puts("DIGITE O GÊNERO (M - MASCULINO | F - FEMININO):");
@@ -1415,11 +1484,13 @@ void Alterar(Pessoa Lista_alunos[], int num_aluno){
         puts("DIGITE O NOME (REPITA CASO JÁ ESTEJA CORRETO):");
         recebe_string(Lista_alunos[opcao].nome, 100);
         recebe_data(&Lista_alunos[opcao].data_nascimento[0], &Lista_alunos[opcao].data_nascimento[1], &Lista_alunos[opcao].data_nascimento[2]);
-        puts("\n");
-        printf("CPF ATUAL: %lld\n\n", Lista_alunos[opcao].cpf);
-        puts("DIGITE O NOVO CPF (REPITA CASO JÁ ESTEJA CORRETO):");
-        scanf("%lld",&Lista_alunos[opcao].cpf);
-        getchar();
+        do{
+            puts("\n");
+            printf("CPF ATUAL: %011lld\n\n", Lista_alunos[opcao].cpf);
+            puts("DIGITE O NOVO CPF (REPITA CASO JÁ ESTEJA CORRETO):");
+            scanf("%lld",&Lista_alunos[opcao].cpf);
+            getchar();
+        } while(validar_cpf(Lista_alunos[opcao].cpf)==CPF_INVALIDO);
 
         do{
             puts("\n");
@@ -1456,11 +1527,13 @@ void Alterar_professor(Pessoa Lista_professores[], int num_professor){
         puts("DIGITE O NOVO NOME (REPITA CASO JÁ ESTEJA CORRETO):");
         recebe_string(Lista_professores[opcao].nome, 100);
         recebe_data(&Lista_professores[opcao].data_nascimento[0], &Lista_professores[opcao].data_nascimento[1], &Lista_professores[opcao].data_nascimento[2]);
-        puts("\n");
-        printf("CPF ATUAL: %lld\n\n", Lista_professores[opcao].cpf);
-        puts("DIGITE O NOVO CPF (REPITA CASO JÁ ESTEJA CORRETO):");
-        scanf("%lld",&Lista_professores[opcao].cpf);
-        getchar();
+        do{
+            puts("\n");
+            printf("CPF ATUAL: %011lld\n\n", Lista_professores[opcao].cpf);
+            puts("DIGITE O NOVO CPF (REPITA CASO JÁ ESTEJA CORRETO):");
+            scanf("%lld",&Lista_professores[opcao].cpf);
+            getchar();
+        } while(validar_cpf(Lista_professores[opcao].cpf)==CPF_INVALIDO);
 
         do{
             puts("\n");
