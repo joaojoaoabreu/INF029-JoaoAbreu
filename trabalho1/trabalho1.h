@@ -11,10 +11,10 @@
 //  O aluno deve preencher seus dados abaixo, e implementar as questões do trabalho
 
 //  ----- Dados do Aluno -----
-//  Nome:
-//  email:
-//  Matrícula:
-//  Semestre:
+//  Nome: João Carvalho Abreu
+//  email: 20261160017@ifba.edu.br
+//  Matrícula: 20261160017
+//  Semestre: 2
 
 //  Copyright © 2016 Renato Novais. All rights reserved.
 // Última atualização: 07/05/2021
@@ -43,6 +43,7 @@ typedef struct Qtd
 
 int somar(int x, int y); //função utilizada para testes
 int fatorial(int x); //função utilizada para testes
+void limpa_data(char data[]);//limpa o \n final (para se a data vier de um fgets)
 int q1(char data[]);
 DiasMesesAnos q2(char datainicial[], char datafinal[]);
 int q3(char *texto, char c, int isCaseSensitive);

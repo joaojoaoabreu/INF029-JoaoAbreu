@@ -10,10 +10,10 @@
 //  O aluno deve preencher seus dados abaixo, e implementar as questões do trabalho
 
 //  ----- Dados do Aluno -----
-//  Nome:
-//  email:
-//  Matrícula:
-//  Semestre:
+//  Nome: João Carvalho Abreu
+//  email: 20261160017@ifba.edu.br
+//  Matrícula: 20261160017
+//  Semestre: 2
 
 //  Copyright © 2016 Renato Novais. All rights reserved.
 // Última atualização: 07/05/2021 - 19/08/2016 - 17/10/2025
@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include "trabalho1.h"
 #include <stdlib.h>
+#include <string.h>
 
 DataQuebrada quebraData(char data[]);
 
@@ -89,12 +90,72 @@ int teste(int a)
     Não utilizar funções próprias de string (ex: strtok)
     pode utilizar strlen para pegar o tamanho da string
  */
+void limpa_data(char data[]){//limpa o \n final se a data vier de fgets
+    for(int i=0; data[i] != '\0'; i++){
+        if(data[i]=='\n'){
+            data[i]='\0';
+            break;
+        }
+    }
+}
 int q1(char data[])
 {
   int datavalida = 1;
+  DataQuebrada dq;
+  limpa_data(data);
+  for(int i=0; data[i]!='\0'; i++){
+      if(
+          data[i]<'/' ||
+          data[i]>'9'
+      ){
+          datavalida = 0;
+          break;
+      }
+  }
+  if(strlen(data)>11){
+      datavalida = 0;
+  }
+  int contabarra = 0;
+  for(int i=0; datavalida==1 && data[i]!='\0';i++){
 
+      if(data[i]=='/'){
+          contabarra++;
+      }
+  }
+  if(contabarra!=2){
+      datavalida = 0;
+  }
   //quebrar a string data em strings sDia, sMes, sAno
-
+  if (datavalida==1){
+      dq = quebraData(data);
+      if(dq.iAno<27){
+          dq.iAno += 2000;
+      }
+      else if(dq.iAno<1000){
+          dq.iAno += 1900;
+      }
+  }
+  if(dq.valido == 0){
+      datavalida=0;
+  }
+  else if(
+      dq.iDia < 1||
+      dq.iMes < 1 ||
+      dq.iMes > 12 ||
+      dq.iAno < 0 ||
+      dq.iAno > 2016 ||
+      dq.iDia > 31 ||
+      (dq.iDia > 30 &&
+          (dq.iMes == 4)||
+          (dq.iMes == 6)||
+          (dq.iMes == 9)||
+          (dq.iMes == 11)) ||
+      (dq.iDia > 29 && (dq.iMes ==2)) ||
+      (dq.iDia > 28 && (dq.iMes == 2) && (dq.iAno%4!=0 || (dq.iAno%100==0 && dq.iAno%400!=0)))
+  )
+  {
+      datavalida=0;
+  }
 
   //printf("%s\n", data);
 
@@ -249,8 +310,8 @@ DataQuebrada quebraData(char data[]){
 		sDia[i] = '\0';  // coloca o barra zero no final
 	}else {
 		dq.valido = 0;
-    return dq;
-  }
+        return dq;
+    }
 
 
 	int j = i + 1; //anda 1 cada para pular a barra
