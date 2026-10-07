@@ -80,7 +80,7 @@ void testQ1()
     printf("%d\n", q1(str) == 1);
     strcpy(str, "9/13/2014");
     printf("%d\n", q1(str) == 0);
-    strcpy(str, "45/4/2014");
+    strcpy(str, "31/4/2014");
     printf("%d\n", q1(str) == 0);
     strcpy(str, "/9/2014");
     printf("%d\n", q1(str) == 0);

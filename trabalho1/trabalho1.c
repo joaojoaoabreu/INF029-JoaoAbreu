@@ -146,10 +146,10 @@ int q1(char data[])
       dq.iAno > 2016 ||
       dq.iDia > 31 ||
       (dq.iDia > 30 &&
-          (dq.iMes == 4)||
+          ((dq.iMes == 4)||
           (dq.iMes == 6)||
           (dq.iMes == 9)||
-          (dq.iMes == 11)) ||
+          (dq.iMes == 11))) ||
       (dq.iDia > 29 && (dq.iMes ==2)) ||
       (dq.iDia > 28 && (dq.iMes == 2) && (dq.iAno%4!=0 || (dq.iAno%100==0 && dq.iAno%400!=0)))
   )
