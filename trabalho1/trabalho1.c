@@ -143,7 +143,7 @@ int q1(char data[])
       dq.iMes < 1 ||
       dq.iMes > 12 ||
       dq.iAno < 0 ||
-      dq.iAno > 2016 ||
+   //   dq.iAno > 2026 ||
       dq.iDia > 31 ||
       (dq.iDia > 30 &&
           ((dq.iMes == 4)||
@@ -194,15 +194,175 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
       dma.retorno = 3;
       return dma;
     }else{
-      //verifique se a data final não é menor que a data inicial
+        //verifique se a data final não é menor que a data inicial
+        DataQuebrada diq = quebraData(datainicial);
+        DataQuebrada dfq = quebraData(datafinal);
+        int bissexto = 0;
+        if(dfq.iAno%4==0){
+            bissexto=1;
+            if(dfq.iAno%100==0 && dfq.iAno%400!=0)
+                bissexto=0;
+        }
 
+        if(
+            diq.iAno > dfq.iAno ||
+            (diq.iAno == dfq.iAno && diq.iMes > dfq.iMes) ||
+            ((diq.iAno == dfq.iAno && diq.iMes==dfq.iMes) && diq.iDia>dfq.iDia)
+        ){
+            dma.retorno = 4;
+            return dma;
+        }
       //calcule a distancia entre as datas
+        else if( //quando o ano, mês e dia iniciais forem menores ou iguais aos da data final
+            ((diq.iAno <= dfq.iAno && diq.iMes<=dfq.iMes) && diq.iDia<=dfq.iDia)
+        ){
+            dma.qtdDias = dfq.iDia - diq.iDia;
+            dma.qtdMeses = dfq.iMes - diq.iMes;
+            dma.qtdAnos = dfq.iAno - diq.iAno;
+            dma.retorno = 1;
+            return dma;
 
+        }
+        else if( //quando o ano for menor ou igual, o mês inicial for menor e o dia inicial for maior
+            (((diq.iAno <= dfq.iAno) && (diq.iMes<dfq.iMes)) && (diq.iDia>dfq.iDia))
+        ){
+            switch(dfq.iMes-1){
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 0:
+                    dma.qtdAnos = dfq.iAno - diq.iAno;
+                    dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                    dma.qtdDias = 31 - diq.iDia + dfq.iDia;
+                    break;
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    if(diq.iDia>30){
+                        dma.qtdAnos = dfq.iAno - diq.iAno;
+                        dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                        dma.qtdDias = dfq.iDia;
+                        break;
+                    }
+                    else{
+                        dma.qtdAnos = dfq.iAno - diq.iAno;
+                        dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                        dma.qtdDias = 30 - diq.iDia + dfq.iDia;
+                        break;
+                    }
+                case 2:
+                    if(bissexto){
+                        if(diq.iDia>29){
+                            dma.qtdAnos = dfq.iAno - diq.iAno;
+                            dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                            dma.qtdDias = dfq.iDia;
+                            break;
+                        }
+                        else{
+                            dma.qtdAnos = dfq.iAno - diq.iAno;
+                            dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                            dma.qtdDias = 29 - diq.iDia + dfq.iDia;
+                            break;
+                        }
+                    }
+                    else{
+                        if(diq.iDia>28){
+                            dma.qtdAnos = dfq.iAno - diq.iAno;
+                            dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                            dma.qtdDias = dfq.iDia;
+                            break;
+                        }
+                        else{
+                            dma.qtdAnos = dfq.iAno - diq.iAno;
+                            dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                            dma.qtdDias = 28 - diq.iDia + dfq.iDia;
+                            break;
+                        }
+                    }
+                default:
+                    break;
+                }
+        }
+        else if( //quando o ano inicial for menor, o mês inicial for maior e o dia inicial for menor ou igual que o final
+            (((diq.iAno < dfq.iAno) && (diq.iMes > dfq.iMes)) && (diq.iDia<=dfq.iDia))
+        ){
+            dma.qtdAnos = dfq.iAno - diq.iAno - 1;
+            dma.qtdMeses = 12 - diq.iMes + dfq.iMes;
+            dma.qtdDias = dfq.iDia - diq.iDia;
+            dma.retorno = 1;
+            return dma;
+        }
+        else  //quando o ano inicial for menor, o mês inicial for maior e o dia inicial for maior
+        {
+            switch(dfq.iMes-1){
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 0:
+                    dma.qtdAnos = dfq.iAno - diq.iAno - 1;
+                    dma.qtdMeses = 11 - diq.iMes + dfq.iMes;
+                    dma.qtdDias = 31 - diq.iDia + dfq.iDia;
+                    break;
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    if(diq.iDia>30){
+                        dma.qtdAnos = dfq.iAno - diq.iAno;
+                        dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                        dma.qtdDias = dfq.iDia;
+                        break;
+                    }
+                    else{
+                        dma.qtdAnos = dfq.iAno - diq.iAno - 1;
+                        dma.qtdMeses = 11 - diq.iMes + dfq.iMes;
+                        dma.qtdDias = 30 - diq.iDia + dfq.iDia;
+                        break;
+                    }
+                case 2:
+                    if(bissexto){
+                        if(diq.iDia>29){
+                            dma.qtdAnos = dfq.iAno - diq.iAno;
+                            dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                            dma.qtdDias = dfq.iDia;
+                            break;
+                        }
+                        else{
+                        dma.qtdAnos = dfq.iAno - diq.iAno - 1;
+                        dma.qtdMeses = 11 - diq.iMes + dfq.iMes;
+                        dma.qtdDias = 29 - diq.iDia + dfq.iDia;
+                        break;
+                        }
+                    }
+                    else{
+                        if(diq.iDia>28){
+                            dma.qtdAnos = dfq.iAno - diq.iAno;
+                            dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                            dma.qtdDias = dfq.iDia;
+                            break;
+                        }
+                        else{
+                            dma.qtdAnos = dfq.iAno - diq.iAno - 1;
+                            dma.qtdMeses = 11 - diq.iMes + dfq.iMes;
+                            dma.qtdDias = 28 - diq.iDia + dfq.iDia;
+                            break;
+                        }
+                    }
+                default:
+                    break;
+                }
 
+        }
+            dma.retorno = 1;
+            return dma;
       //se tudo der certo
-      dma.retorno = 1;
-      return dma;
-
     }
 
 }
