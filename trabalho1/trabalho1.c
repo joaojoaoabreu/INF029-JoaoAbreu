@@ -296,10 +296,16 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
             dma.retorno = 1;
             return dma;
         }
-        else  //quando o ano inicial for menor, o mês inicial for maior e o dia inicial for maior
+        else  //quando o ano inicial for menor, o mês inicial for maior ou igual e o dia inicial for maior
         {
             switch(dfq.iMes-1){
                 case 1:
+                    if((diq.iMes==2 && diq.iDia==29) && dfq.iDia == 28){
+                        dma.qtdAnos = dfq.iAno - diq.iAno;
+                        dma.qtdMeses = diq.iMes - dfq.iMes;
+                        dma.qtdDias = 0;
+                        break;
+                    }
                 case 3:
                 case 5:
                 case 7:
@@ -316,7 +322,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
                 case 11:
                     if(diq.iDia>30){
                         dma.qtdAnos = dfq.iAno - diq.iAno;
-                        dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                        dma.qtdMeses = 11 - diq.iMes + dfq.iMes;
                         dma.qtdDias = dfq.iDia;
                         break;
                     }
@@ -330,7 +336,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
                     if(bissexto){
                         if(diq.iDia>29){
                             dma.qtdAnos = dfq.iAno - diq.iAno;
-                            dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                            dma.qtdMeses = 11 - diq.iMes + dfq.iMes;
                             dma.qtdDias = dfq.iDia;
                             break;
                         }
@@ -344,7 +350,7 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
                     else{
                         if(diq.iDia>28){
                             dma.qtdAnos = dfq.iAno - diq.iAno;
-                            dma.qtdMeses = dfq.iMes - diq.iMes - 1;
+                            dma.qtdMeses = 11 - diq.iMes + dfq.iMes;
                             dma.qtdDias = dfq.iDia;
                             break;
                         }
@@ -379,7 +385,30 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  */
 int q3(char *texto, char c, int isCaseSensitive)
 {
-    int qtdOcorrencias = -1;
+
+    int qtdOcorrencias = 0;
+    if(isCaseSensitive){
+        for(int i=0; i<strlen(texto); i++){
+            if(texto[i]==c){
+                qtdOcorrencias++;
+            }
+        }
+    }
+    else{
+        for(int i=0; i<strlen(texto); i++){
+            if(texto[i]>='a' && texto[i]<='z'){
+                texto[i]-=32;
+            }
+        }
+        if(c>='a' && c<='z'){
+            c-=32;
+        }
+        for(int i=0; i<strlen(texto); i++){
+            if(texto[i]==c){
+                qtdOcorrencias++;
+            }
+        }
+    }
 
     return qtdOcorrencias;
 }

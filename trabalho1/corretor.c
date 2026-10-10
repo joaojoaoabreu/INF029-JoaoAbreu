@@ -131,13 +131,13 @@ void testQ2()
     qtdMeses = -1;
     qtdAnos = -1;
 
-    strcpy(datainicial, "06/06/2017");
-    strcpy(datafinal, "07/07/2017");
+    strcpy(datainicial, "29/02/2016");
+    strcpy(datafinal, "28/02/2017");
     dma = q2(datainicial, datafinal);
     printf("%d\n", dma.retorno == 1);
-    printf("%d\n", dma.qtdDias == 1);
-    printf("%d\n", dma.qtdMeses == 1);
-    printf("%d\n", dma.qtdAnos == 0);
+    printf("%d\n", dma.qtdDias == 0);
+    printf("%d\n", dma.qtdMeses == 0);
+    printf("%d\n", dma.qtdAnos == 1);
 }
 
 void testQ3()
