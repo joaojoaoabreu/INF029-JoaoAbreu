@@ -474,6 +474,12 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
+    int invertido = 0;
+    while(num>10){
+        invertido = num%10 + invertido*10;
+        num = num/10;
+    }
+    num+=invertido*10;
 
     return num;
 }
@@ -490,7 +496,22 @@ int q5(int num)
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias;
+    int nbusca=numerobusca;
+    int qtdOcorrencias = 0;
+    int final_base, final_busca;
+    while(numerobase>0){
+        for(nbusca=numerobusca; nbusca>0;){
+            if(numerobase%10!=nbusca%10){
+                break;
+            }
+            numerobase/=10;
+            nbusca/=10;
+        }
+        if(nbusca==0){
+            qtdOcorrencias++;
+        }
+        numerobase/=10;
+    }
     return qtdOcorrencias;
 }
 
