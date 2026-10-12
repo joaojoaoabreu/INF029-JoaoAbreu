@@ -219,7 +219,7 @@ void testQ7()
     };
     char stringBusca [6] = { 'F', 'E', 'H', 'S', 'K'};
     printf("%d\n", q7(matrix, stringBusca) == 1);
-    strcpy(stringBusca, "KJQRT");
+    strcpy(stringBusca, "OJGPE");
     printf("%d\n", q7(matrix, stringBusca) == 1);
     strcpy(stringBusca, "AATOK");
     printf("%d\n", q7(matrix, stringBusca) == 0);

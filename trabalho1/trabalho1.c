@@ -26,7 +26,14 @@
 #include <string.h>
 
 DataQuebrada quebraData(char data[]);
-
+int BuscaHorizontalED(char matrix[8][10], char stringBusca[6]);
+int BuscaHorizontalDE(char matrix[8][10], char stringBusca[6]);
+int BuscaVerticalCB(char matrix[8][10], char stringBusca[6]);
+int BuscaVerticalBC(char matrix[8][10], char stringBusca[6]);
+int BuscaDiagonalCEBD(char matrix[8][10], char stringBusca[6]);
+int BuscaDiagonalCDBE(char matrix[8][10], char stringBusca[6]);
+int BuscaDiagonalBECD(char matrix[8][10], char stringBusca[6]);
+int BuscaDiagonalBDCE(char matrix[8][10], char stringBusca[6]);
 /*
 ## função utilizada para testes  ##
 
@@ -525,14 +532,287 @@ int q6(int numerobase, int numerobusca)
     1 se achou 0 se não achou
  */
 
- int q7(char matriz[8][10], char palavra[5])
+ int q7(char matriz[8][10], char palavra[6])
  {
      int achou;
+     achou = BuscaHorizontalED(matriz, palavra);
+     if(!achou){
+          achou = BuscaHorizontalDE(matriz, palavra);
+     }
+     if(!achou){
+          achou = BuscaVerticalCB(matriz, palavra);
+     }
+     if(!achou){
+          achou = BuscaVerticalBC(matriz, palavra);
+     }
+     if(!achou){
+          achou = BuscaDiagonalCEBD(matriz, palavra);
+     }
+     if(!achou){
+          achou = BuscaDiagonalCDBE(matriz, palavra);
+     }
+     if(!achou){
+          achou = BuscaDiagonalBECD(matriz, palavra);
+     }
+     if(!achou){
+          achou = BuscaDiagonalBDCE(matriz, palavra);
+     }
      return achou;
  }
+int BuscaHorizontalED(char matrix[8][10], char stringBusca[6]){
+    int num=0;
+    int z=0;
 
+    for(int i=0; i<8; i++){
+        for(int j=0; j<10; j++){
+            if(matrix[i][j]!=stringBusca[z]){
+                z=0;
+            }
+            else{
+                z++;
+                if(z==strlen(stringBusca)){
+                    num=1;
+                    break;
+                }
+            }
+        }
+        if(num==1){
+            break;
+        }
+        else{
+            z=0;
+        }
+    }
+    return num;
+}
+int BuscaHorizontalDE(char matrix[8][10], char stringBusca[6]){
+    int num=0;
+    int z=0;
+    for(int i=0; i<8; i++){
+        for(int j=9; j>=0; j--){
+            if(matrix[i][j]!=stringBusca[z]){
+                z=0;
+            }
+            else{
+                z++;
+                if(z==strlen(stringBusca)){
+                    num=1;
+                    break;
+                }
+            }
+        }
+        if(num==1){
+            break;
+        }
+        else{
+            z=0;
+        }
+    }
+    return num;
+}
+int BuscaVerticalCB(char matrix[8][10], char stringBusca[6]){
+    int num=0;
+    int z=0;
 
-
+    for(int i=0; i<10; i++){
+        for(int j=0; j<8; j++){
+            if(matrix[j][i]!=stringBusca[z]){
+                z=0;
+            }
+            else{
+                z++;
+                if(z==strlen(stringBusca)){
+                    num=1;
+                    break;
+                }
+            }
+        }
+        if(num==1){
+            break;
+        }
+        else{
+            z=0;
+        }
+    }
+    return num;
+}
+int BuscaVerticalBC(char matrix[8][10], char stringBusca[6]){
+    int num=0;
+    int z=0;
+    for(int i=0; i<10; i++){
+        for(int j=7; j>=0; j--){
+            if(matrix[j][i]!=stringBusca[z]){
+                z=0;
+            }
+            else{
+                z++;
+                if(z==strlen(stringBusca)){
+                    num=1;
+                    break;
+                }
+            }
+        }
+        if(num==1){
+            break;
+        }
+        else{
+            z=0;
+        }
+    }
+    return num;
+}
+int BuscaDiagonalCEBD(char matrix[8][10], char stringBusca[6]){
+    int num=0;
+    for(int i=7; i>0; i--){
+        for(int j=0, k=i, z=0; j<10 || k<8; j++, k++){
+            if(matrix[k][j]!=stringBusca[z]){
+                z=0;
+            }
+            else{
+                z++;
+                if(z==strlen(stringBusca)){
+                    num=1;
+                    break;
+                }
+            }
+        }
+        if(num==1){
+            break;
+        }
+    }
+    for(int j=0; !num && j<10; j++){
+        for(int i=0, k=j, z=0; k<10 || i<8; k++, i++){
+            if(matrix[i][k]!=stringBusca[z]){
+                z=0;
+            }
+            else{
+                z++;
+                if(z==strlen(stringBusca)){
+                    num=1;
+                    break;
+                }
+            }
+        }
+        if(num==1){
+            break;
+        }
+    }
+    return num;
+}
+int BuscaDiagonalCDBE(char matrix[8][10], char stringBusca[6]){
+    int num=0;
+    for(int i=7; i>0; i--){
+        for(int j=9, k=i, z=0; j>=0 || k<8; j--, k++){
+            if(matrix[k][j]!=stringBusca[z]){
+                z=0;
+            }
+            else{
+                z++;
+                if(z==strlen(stringBusca)){
+                    num=1;
+                    break;
+                }
+            }
+        }
+        if(num==1){
+            break;
+        }
+    }
+    for(int j=9; !num && j>=0; j--){
+        for(int i=0, k=j, z=0; k>=0 || i<8; k--, i++){
+            if(matrix[i][k]!=stringBusca[z]){
+                z=0;
+            }
+            else{
+                z++;
+                if(z==strlen(stringBusca)){
+                    num=1;
+                    break;
+                }
+            }
+        }
+        if(num==1){
+            break;
+        }
+    }
+    return num;
+}
+int BuscaDiagonalBECD(char matrix[8][10], char stringBusca[6]){
+    int num=0;
+    for(int j=9; j>0; j--){
+        for(int i=7, k=j, z=0; i>=0 || k<10; k++, i--){
+            if(matrix[i][k]!=stringBusca[z]){
+                z=0;
+            }
+            else{
+                z++;
+                if(z==strlen(stringBusca)){
+                    num=1;
+                    break;
+                }
+            }
+        }
+        if(num==1){
+            break;
+        }
+    }
+    for(int i=7; !num && i>=0; i--){
+        for(int j=0, k=i, z=0; k>=0 || j<10; k--, j++){
+            if(matrix[k][j]!=stringBusca[z]){
+                z=0;
+            }
+            else{
+                z++;
+                if(z==strlen(stringBusca)){
+                    num=1;
+                    break;
+                }
+            }
+        }
+        if(num==1){
+            break;
+        }
+    }
+    return num;
+}
+int BuscaDiagonalBDCE(char matrix[8][10], char stringBusca[6]){
+    int num=0;
+    for(int j=0; j<9; j++){
+        for(int i=7, k=j, z=0; k>=0 || i>=0; i--, k--){
+            if(matrix[i][k]!=stringBusca[z]){
+                z=0;
+            }
+            else{
+                z++;
+                if(z==strlen(stringBusca)){
+                    num=1;
+                    break;
+                }
+            }
+        }
+        if(num==1){
+            break;
+        }
+    }
+    for(int i=7; !num && i>=0; i--){
+        for(int j=9, k=i, z=0; k>=0 || j>=0; k--, j--){
+            if(matrix[i][k]!=stringBusca[z]){
+                z=0;
+            }
+            else{
+                z++;
+                if(z==strlen(stringBusca)){
+                    num=1;
+                    break;
+                }
+            }
+        }
+        if(num==1){
+            break;
+        }
+    }
+    return num;
+}
 DataQuebrada quebraData(char data[]){
   DataQuebrada dq;
   char sDia[3];

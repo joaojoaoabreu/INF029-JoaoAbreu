@@ -50,7 +50,15 @@ int q3(char *texto, char c, int isCaseSensitive);
 int q4(char *strTexto, char *strBusca, int posicoes[30]);
 int q5(int num);
 int q6(int numerobase, int numerobusca);
-int q7(char matriz[8][10], char palavra[5]);
+int q7(char matriz[8][10], char palavra[6]);
 DataQuebrada quebraData(char data[]);
+int BuscaHorizontalED(char matrix[8][10], char stringBusca[6]);
+int BuscaHorizontalDE(char matrix[8][10], char stringBusca[6]);
+int BuscaVerticalCB(char matrix[8][10], char stringBusca[6]);
+int BuscaVerticalBC(char matrix[8][10], char stringBusca[6]);
+int BuscaDiagonalCEBD(char matrix[8][10], char stringBusca[6]);
+int BuscaDiagonalCDBE(char matrix[8][10], char stringBusca[6]);
+int BuscaDiagonalBECD(char matrix[8][10], char stringBusca[6]);
+int BuscaDiagonalBDCE(char matrix[8][10], char stringBusca[6]);
 
 #endif  // MAIN_H
