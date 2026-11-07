@@ -4,7 +4,12 @@
 
 #include "trabalho2.h"
 
-int vetorPrincipal[TAM];
+typedef struct{
+int *tamanho;
+int contador;
+} auxiliar;
+
+auxiliar vetorPrincipal[TAM];
 
 /*
 Objetivo: criar estrutura auxiliar na posição 'posicao'.
@@ -19,7 +24,7 @@ Rertono (int)
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
-
+    
     int retorno = 0;
     // a posicao pode já existir estrutura auxiliar
     retorno = JA_TEM_ESTRUTURA_AUXILIAR;
@@ -117,7 +122,7 @@ int excluirNumeroEspecificoDeEstrutura(int posicao, int valor)
 int ehPosicaoValida(int posicao)
 {
     int retorno = 0;
-    if (posicao < 1 || posicao > 10)
+    if (posicao < 1 || posicao > TAM)
     {
         retorno = POSICAO_INVALIDA;
     }
