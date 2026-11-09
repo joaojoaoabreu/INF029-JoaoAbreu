@@ -4,13 +4,6 @@
 
 #include "trabalho2.h"
 
-typedef struct{
-int *aux;
-int tamanho;
-int contador;
-int ativo=0;
-} auxiliar;
-
 auxiliar vetorPrincipal[TAM];
 
 /*
@@ -32,7 +25,10 @@ int criarEstruturaAuxiliar(int posicao, int tamanho)
     else{
         vetorPrincipal[posicao].aux = malloc(tamanho * sizeof(int))
         if(vetorPrincipal[posicao].aux == NULL) return SEM_ESPACO_DE_MEMORIA;
-        else return SUCESSO;
+        else {
+            vetorPrincipal[posicao].ativo = 1;
+            return SUCESSO;
+        }
     }
 }
 
@@ -52,12 +48,12 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
     int temEspaco = 0;
     int posicao_invalida = 0;
 
-    if (posicao_invalida)
-        retorno = POSICAO_INVALIDA;
+    if (posicao>=TAM || posicao < 0)
+        return POSICAO_INVALIDA;
     else
     {
         // testar se existe a estrutura auxiliar
-        if (existeEstruturaAuxiliar)
+        if (vetorPrincipal[posicao].ativo)
         {
             if (temEspaco)
             {
