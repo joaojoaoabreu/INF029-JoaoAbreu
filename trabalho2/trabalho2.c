@@ -5,8 +5,10 @@
 #include "trabalho2.h"
 
 typedef struct{
-int *tamanho;
+int *aux;
+int tamanho;
 int contador;
+int ativo=0;
 } auxiliar;
 
 auxiliar vetorPrincipal[TAM];
@@ -24,20 +26,14 @@ Rertono (int)
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
-    
-    int retorno = 0;
-    // a posicao pode já existir estrutura auxiliar
-    retorno = JA_TEM_ESTRUTURA_AUXILIAR;
-    // se posição é um valor válido {entre 1 e 10}
-    retorno = POSICAO_INVALIDA;
-    // o tamanho ser muito grande
-    retorno = SEM_ESPACO_DE_MEMORIA;
-    // o tamanho nao pode ser menor que 1
-    retorno = TAMANHO_INVALIDO;
-    // deu tudo certo, crie
-    retorno = SUCESSO;
-
-    return retorno;
+    if(posicao>=TAM || posicao < 0) return POSICAO_INVALIDA;
+    else if(vetorPrincipal[posicao].ativo) return JA_TEM_ESTRUTURA_AUXILIAR;
+    else if(tamanho<0) return TAMANHO_INVALIDO;
+    else{
+        vetorPrincipal[posicao].aux = malloc(tamanho * sizeof(int))
+        if(vetorPrincipal[posicao].aux == NULL) return SEM_ESPACO_DE_MEMORIA;
+        else return SUCESSO;
+    }
 }
 
 /*
@@ -162,7 +158,7 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
 
     int retorno = 0;
 
-    
+
     return retorno;
 }
 
@@ -264,7 +260,7 @@ void destruirListaEncadeadaComCabecote(No **inicio)
 }
 
 /*
-Objetivo: inicializa o programa. deve ser chamado ao inicio do programa 
+Objetivo: inicializa o programa. deve ser chamado ao inicio do programa
 
 */
 
@@ -273,7 +269,7 @@ void inicializar()
 }
 
 /*
-Objetivo: finaliza o programa. deve ser chamado ao final do programa 
+Objetivo: finaliza o programa. deve ser chamado ao final do programa
 para poder liberar todos os espaços de memória das estruturas auxiliares.
 
 */
