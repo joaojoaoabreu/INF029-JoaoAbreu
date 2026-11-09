@@ -19,14 +19,15 @@ Rertono (int)
 */
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
-    if(posicao>=TAM || posicao < 0) return POSICAO_INVALIDA;
-    else if(vetorPrincipal[posicao].ativo) return JA_TEM_ESTRUTURA_AUXILIAR;
+    if(posicao>TAM || posicao < 1) return POSICAO_INVALIDA;
+    else if(vetorPrincipal[posicao-1].ativo) return JA_TEM_ESTRUTURA_AUXILIAR;
     else if(tamanho<0) return TAMANHO_INVALIDO;
     else{
-        vetorPrincipal[posicao].aux = malloc(tamanho * sizeof(int))
-        if(vetorPrincipal[posicao].aux == NULL) return SEM_ESPACO_DE_MEMORIA;
+        vetorPrincipal[posicao-1].aux = malloc(tamanho * sizeof(int))
+        if(vetorPrincipal[posicao-1].aux == NULL) return SEM_ESPACO_DE_MEMORIA;
         else {
-            vetorPrincipal[posicao].ativo = 1;
+            vetorPrincipal[posicao-1].ativo = 1;
+            vetorPrincipal[posicao-1].tamanho = tamanho;
             return SUCESSO;
         }
     }
@@ -43,35 +44,32 @@ CONSTANTES
 */
 int inserirNumeroEmEstrutura(int posicao, int valor)
 {
-    int retorno = 0;
-    int existeEstruturaAuxiliar = 0;
-    int temEspaco = 0;
-    int posicao_invalida = 0;
 
-    if (posicao>=TAM || posicao < 0)
+
+    if (posicao>TAM || posicao < 1)
         return POSICAO_INVALIDA;
     else
     {
         // testar se existe a estrutura auxiliar
-        if (vetorPrincipal[posicao].ativo)
+        if (vetorPrincipal[posicao-1].ativo)
         {
-            if (temEspaco)
+            if (vetorPrincipal[posicao-1].contador < vetorPrincipal[posicao-1].tamanho)
             {
-                //insere
-                retorno = SUCESSO;
+                vetorPrincipal[posicao-1].aux[contador]=valor;
+                vetorPrincipal[posicao-1].contador++;
+                return SUCESSO;
             }
             else
             {
-                retorno = SEM_ESPACO;
+                return SEM_ESPACO;
             }
         }
         else
         {
-            retorno = SEM_ESTRUTURA_AUXILIAR;
+            return SEM_ESTRUTURA_AUXILIAR;
         }
     }
 
-    return retorno;
 }
 
 /*
@@ -87,8 +85,20 @@ Rertono (int)
 */
 int excluirNumeroDoFinaldaEstrutura(int posicao)
 {
-    int retorno = SUCESSO;
-    return retorno;
+    if(posicao > 10 || posicao < 1)
+        return POSICAO_INVALIDA;
+
+    else if(!vetorPrincipal[posicao-1].ativo)
+        return SEM_ESTRUTURA_AUXILIAR;
+
+    else if(!vetorPrincipal[posicao-1].contador)
+        return ESTRUTURA_AUXILIAR_VAZIA;
+
+    else{
+        vetorPrincipal[posicao-1].contador--;
+        return SUCESSO;
+    }
+
 }
 
 /*
@@ -106,22 +116,45 @@ Rertono (int)
 */
 int excluirNumeroEspecificoDeEstrutura(int posicao, int valor)
 {
-    int retorno = SUCESSO;
-    return retorno;
+    if(posicao > 10 || posicao < 1)
+        return POSICAO_INVALIDA;
+
+    else if(!vetorPrincipal[posicao-1].ativo)
+        return SEM_ESTRUTURA_AUXILIAR;
+
+    else if(!vetorPrincipal[posicao-1].contador)
+        return ESTRUTURA_AUXILIAR_VAZIA;
+
+    else{
+        int achou=0;
+        for(int i=0; i>vetorPrincipal[posicao-1].contador; i++){
+            if(vetorPrincipal[posicao-1].aux[i]==valor){
+                achou++;
+                if(i==vetorPrincipal[posicao-1].contador-1)
+                    vetorPrincipal[posicao-1].contador--;
+                else{
+                    for(int j=i; j>vetorPrincipal[posicao-1].contador - 1; j++){
+                        vetorPrincipal[posicao-1].aux[j]=vetorPrincipal[posicao-1].aux[j+1];
+                    }
+                    vetorPrincipal[posicao-1].contador--;
+                }
+            }
+        }
+        if(!achou) return NUMERO_INEXISTENTE;
+        else return SUCESSO;
+    }
 }
 
 // se posição é um valor válido {entre 1 e 10}
 int ehPosicaoValida(int posicao)
 {
-    int retorno = 0;
     if (posicao < 1 || posicao > TAM)
     {
-        retorno = POSICAO_INVALIDA;
+        return POSICAO_INVALIDA;
     }
     else
-        retorno = SUCESSO;
+        return SUCESSO;
 
-    return retorno;
 }
 /*
 Objetivo: retorna os números da estrutura auxiliar da posição 'posicao (1..10)'.
