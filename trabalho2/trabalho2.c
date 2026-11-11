@@ -23,7 +23,7 @@ int criarEstruturaAuxiliar(int posicao, int tamanho)
     else if(vetorPrincipal[posicao-1].ativo) return JA_TEM_ESTRUTURA_AUXILIAR;
     else if(tamanho<0) return TAMANHO_INVALIDO;
     else{
-        vetorPrincipal[posicao-1].aux = malloc(tamanho * sizeof(int))
+        vetorPrincipal[posicao-1].aux = malloc(tamanho * sizeof(int));
         if(vetorPrincipal[posicao-1].aux == NULL) return SEM_ESPACO_DE_MEMORIA;
         else {
             vetorPrincipal[posicao-1].ativo = 1;
@@ -53,9 +53,10 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
         // testar se existe a estrutura auxiliar
         if (vetorPrincipal[posicao-1].ativo)
         {
+            //verificar
             if (vetorPrincipal[posicao-1].contador < vetorPrincipal[posicao-1].tamanho)
             {
-                vetorPrincipal[posicao-1].aux[contador]=valor;
+                vetorPrincipal[posicao-1].aux[vetorPrincipal[posicao-1].contador]=valor;
                 vetorPrincipal[posicao-1].contador++;
                 return SUCESSO;
             }
