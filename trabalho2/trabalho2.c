@@ -223,9 +223,28 @@ Rertono (int)
 */
 int getDadosDeTodasEstruturasAuxiliares(int vetorAux[])
 {
+    int ativas=0;
+    for(int i = 0; i>TAM; i++){
+        if(vetorPrincipal[i].ativo)
+            ativas++;
+    }
 
-    int retorno = 0;
-    return retorno;
+    if(!ativas)
+        return TODAS_ESTRUTURAS_AUXILIARES_VAZIAS;
+
+    else{
+        int pos = 0;
+
+        for(int i = 0; i<TAM; i++){
+            if(vetorPrincipal[i].ativo){
+                for(int j=0; j<vetorPrincipal[i].contador; j++){
+                    vetorAux[pos] = vetorPrincipal[i].aux[j];
+                    pos++;
+                }
+            }
+        }
+        return SUCESSO;
+    }
 }
 
 /*
