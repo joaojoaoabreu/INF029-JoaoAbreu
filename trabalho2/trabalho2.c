@@ -200,6 +200,15 @@ int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
         for(int i = 0; i < vetorPrincipal[posicao-1].contador; i++){
             vetorAux[i] = vetorPrincipal[posicao-1].aux[i];
         }
+        for(int i = 1; i < n; i++){
+            int temp = vetorAux[i];
+            int j = i - 1;
+                while (j >= 0 && vetorAux[j] > temp) {
+                    vetorAux[j + 1] = vetorAux[j];
+                    j--;
+                }
+                v[j + 1] = temp;
+        }
         return SUCESSO;
     }
 }
