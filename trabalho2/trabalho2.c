@@ -167,10 +167,17 @@ Retorno (int)
 */
 int getDadosEstruturaAuxiliar(int posicao, int vetorAux[])
 {
+    if(posicao > 10 || posicao < 1)
+        return POSICAO_INVALIDA;
 
-    int retorno = 0;
-
-    return retorno;
+    else if(!vetorPrincipal[posicao-1].ativo)
+        return SEM_ESTRUTURA_AUXILIAR;
+    else{
+        for(int i = 0; i < vetorPrincipal[posicao-1].contador; i++){
+            vetorAux[i] = vetorPrincipal[posicao-1].aux[i];
+        }
+        return SUCESSO;
+    }
 }
 
 /*
@@ -184,11 +191,17 @@ Rertono (int)
 */
 int getDadosOrdenadosEstruturaAuxiliar(int posicao, int vetorAux[])
 {
+    if(posicao > 10 || posicao < 1)
+        return POSICAO_INVALIDA;
 
-    int retorno = 0;
-
-
-    return retorno;
+    else if(!vetorPrincipal[posicao-1].ativo)
+        return SEM_ESTRUTURA_AUXILIAR;
+    else{
+        for(int i = 0; i < vetorPrincipal[posicao-1].contador; i++){
+            vetorAux[i] = vetorPrincipal[posicao-1].aux[i];
+        }
+        return SUCESSO;
+    }
 }
 
 /*
