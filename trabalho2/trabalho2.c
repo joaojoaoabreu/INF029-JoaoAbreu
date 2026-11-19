@@ -20,17 +20,17 @@ Rertono (int)
 int criarEstruturaAuxiliar(int posicao, int tamanho)
 {
     if(posicao>TAM || posicao < 1) return POSICAO_INVALIDA;
-    else if(vetorPrincipal[posicao-1].ativo) return JA_TEM_ESTRUTURA_AUXILIAR;
-    else if(tamanho<0) return TAMANHO_INVALIDO;
-    else{
-        vetorPrincipal[posicao-1].aux = malloc(tamanho * sizeof(int));
-        if(vetorPrincipal[posicao-1].aux == NULL) return SEM_ESPACO_DE_MEMORIA;
-        else {
-            vetorPrincipal[posicao-1].ativo = 1;
-            vetorPrincipal[posicao-1].tamanho = tamanho;
-            return SUCESSO;
-        }
-    }
+    if(vetorPrincipal[posicao-1].ativo) return JA_TEM_ESTRUTURA_AUXILIAR;
+    if(tamanho<0) return TAMANHO_INVALIDO;
+    
+    
+    vetorPrincipal[posicao-1].aux = malloc(tamanho * sizeof(int));
+    if(vetorPrincipal[posicao-1].aux == NULL) return SEM_ESPACO_DE_MEMORIA;
+    
+    vetorPrincipal[posicao-1].ativo = 1;
+    vetorPrincipal[posicao-1].tamanho = tamanho;
+    return SUCESSO;
+
 }
 
 /*
@@ -48,28 +48,27 @@ int inserirNumeroEmEstrutura(int posicao, int valor)
 
     if (posicao>TAM || posicao < 1)
         return POSICAO_INVALIDA;
-    else
+
+    // testar se existe a estrutura auxiliar
+    if (vetorPrincipal[posicao-1].ativo)
     {
-        // testar se existe a estrutura auxiliar
-        if (vetorPrincipal[posicao-1].ativo)
+        //verificar
+        if (vetorPrincipal[posicao-1].contador < vetorPrincipal[posicao-1].tamanho)
         {
-            //verificar
-            if (vetorPrincipal[posicao-1].contador < vetorPrincipal[posicao-1].tamanho)
-            {
-                vetorPrincipal[posicao-1].aux[vetorPrincipal[posicao-1].contador]=valor;
-                vetorPrincipal[posicao-1].contador++;
-                return SUCESSO;
-            }
-            else
-            {
-                return SEM_ESPACO;
-            }
+            vetorPrincipal[posicao-1].aux[vetorPrincipal[posicao-1].contador]=valor;
+            vetorPrincipal[posicao-1].contador++;
+            return SUCESSO;
         }
         else
         {
-            return SEM_ESTRUTURA_AUXILIAR;
+            return SEM_ESPACO;
         }
     }
+    else
+    {
+        return SEM_ESTRUTURA_AUXILIAR;
+    }
+
 
 }
 
@@ -305,9 +304,23 @@ Rertono (int)
 */
 int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho)
 {
+    if(posicao > 10 || posicao < 1)
+        return POSICAO_INVALIDA;
+    
+    if(!vetorPrincipal[posicao-1].ativo)
+        return SEM_ESTRUTURA_AUXILIAR;
 
-    int retorno = 0;
-    return retorno;
+    if(novoTamanho<0)
+        return NOVO_TAMANHO_INVALIDO;
+
+    vetorPrincipal[posicao-1].aux = realloc (vetorPrincipal[posicao-1].aux, novoTamanho * sizeof(int));
+    if(!vetorPrincipal[posicao-1].aux){
+        vetorPrincipal[posicao-1].ativo = 0;
+        return SEM_ESPACO_DE_MEMORIA;
+    }
+
+    vetorPrincipal[posicao-1].tamanho = novoTamanho
+    return SUCESSO;
 }
 
 /*
