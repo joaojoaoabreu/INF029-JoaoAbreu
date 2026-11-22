@@ -22,11 +22,11 @@ int criarEstruturaAuxiliar(int posicao, int tamanho)
     if(posicao>TAM || posicao < 1) return POSICAO_INVALIDA;
     if(vetorPrincipal[posicao-1].ativo) return JA_TEM_ESTRUTURA_AUXILIAR;
     if(tamanho<0) return TAMANHO_INVALIDO;
-    
-    
+
+
     vetorPrincipal[posicao-1].aux = malloc(tamanho * sizeof(int));
     if(vetorPrincipal[posicao-1].aux == NULL) return SEM_ESPACO_DE_MEMORIA;
-    
+
     vetorPrincipal[posicao-1].ativo = 1;
     vetorPrincipal[posicao-1].tamanho = tamanho;
     return SUCESSO;
@@ -306,7 +306,7 @@ int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho)
 {
     if(posicao > 10 || posicao < 1)
         return POSICAO_INVALIDA;
-    
+
     if(!vetorPrincipal[posicao-1].ativo)
         return SEM_ESTRUTURA_AUXILIAR;
 
@@ -319,7 +319,7 @@ int modificarTamanhoEstruturaAuxiliar(int posicao, int novoTamanho)
         return SEM_ESPACO_DE_MEMORIA;
     }
 
-    vetorPrincipal[posicao-1].tamanho = novoTamanho
+    vetorPrincipal[posicao-1].tamanho = novoTamanho;
     return SUCESSO;
 }
 
@@ -334,10 +334,16 @@ Retorno (int)
 */
 int getQuantidadeElementosEstruturaAuxiliar(int posicao)
 {
+    if(posicao > 10 || posicao < 1)
+        return POSICAO_INVALIDA;
 
-    int retorno = 0;
+    if(!vetorPrincipal[posicao-1].ativo)
+        return SEM_ESTRUTURA_AUXILIAR;
 
-    return retorno;
+    if(!vetorPrincipal[posicao-1].contador)
+        return ESTRUTURA_AUXILIAR_VAZIA;
+
+    return vetorPrincipal[posicao-1].contador;
 }
 
 /*
@@ -349,8 +355,25 @@ Retorno (No*)
 */
 No *montarListaEncadeadaComCabecote()
 {
+    No * cabeca = malloc(sizeof(No));
+    if(!cabeca){
+        printf("Erro na alocação de espaço");
+        return NULL;
+    }
+    cabeca->prox = NULL;
+    cabeca->conteudo = 0;
 
-    return NULL;
+    for(int i=TAM-1; i>=0; i--){
+        for(int j = vetorPrincipal[i].contador - 1; vetorPrincipal[i].ativo != 0 && j>=0; j--){
+            No * novo = malloc(sizeof(No));
+            novo->prox = cabeca->prox;
+            cabeca->prox = novo;
+            novo->conteudo = vetorPrincipal[i].aux[j];
+        }
+
+    }
+    return cabeca;
+
 }
 
 /*
@@ -359,6 +382,10 @@ Retorno void
 */
 void getDadosListaEncadeadaComCabecote(No *inicio, int vetorAux[])
 {
+    for(int i=0; inicio->prox != NULL; i++){
+        vetorAux[i]=inicio->prox->conteudo;
+        inicio = inicio->prox;
+    }
 }
 
 /*
@@ -370,6 +397,14 @@ Retorno joaojoaoabreu/INF029-JoaoAbreu
 */
 void destruirListaEncadeadaComCabecote(No **inicio)
 {
+    No *p = (*inicio)->prox;
+    while(p!=NULL){
+        No *temp = p->prox;
+        free(p);
+        p=temp;
+    }
+    free(*inicio);
+    *inicio=NULL;
 }
 
 /*
