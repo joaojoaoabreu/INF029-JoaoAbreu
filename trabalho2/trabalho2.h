@@ -17,8 +17,8 @@ typedef struct reg {
 typedef struct{
 int *aux;
 int tamanho;
-int contador=0;
-int ativo=0;
+int contador;
+int ativo;
 } auxiliar;
 
 int criarEstruturaAuxiliar(int posicao, int tamanho);

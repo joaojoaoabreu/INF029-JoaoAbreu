@@ -29,7 +29,7 @@ int main()
     testeListaEncadeada();
     finalizar();
 }
-int ligado = 0;
+int ligado = 1;
 void show_log(char *str)
 {
     if (ligado)
@@ -101,7 +101,7 @@ void testeExcluirNumeroEspecifico()
     printf("%d\n", excluirNumeroEspecificoDeEstrutura(1, 2) == SEM_ESTRUTURA_AUXILIAR);
 }
 /*
-9 [ 4, , ] 
+9 [ 4, , ]
 */
 
 void testeListar()
